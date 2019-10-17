@@ -10,8 +10,8 @@ All the raw sequencing data from the E.coli sequencing experiments have been dep
 
 ### Contents
 
-- [Software required](dnmt3a-dnmt3b#software-required)
-- [Sequence context diversity in reference genomes](dnmt3a-dnmt3b#sequence-context-diversity-in-reference-genomes)
+- [Software required](README.md#software-required)
+- [Sequence context diversity in reference genomes](README.md#sequence-context-diversity-in-reference-genomes)
 
 
 
