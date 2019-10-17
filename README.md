@@ -3,7 +3,7 @@ This repository contains data access and computational analyses for the methods 
 
 ## Data
 
-All the raw sequencing data from the E.coli sequencing experiments have been deposited in the ArrayExpress database at EMBL-EBI under accession number [E-MTAB-8406](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8406) (currently only accesible to referees)
+All the raw sequencing data from the E.coli sequencing experiments have been deposited in the ArrayExpress database at EMBL-EBI under accession number [E-MTAB-8406](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8406) (currently accesible only to referees)
 
 
 ## Code
