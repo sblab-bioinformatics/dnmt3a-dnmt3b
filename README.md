@@ -54,3 +54,7 @@ do
   echo "CpG +/-" $b "bp:" $m "out of" $c "combinations (" `echo "scale=2; 100*$m/$c" | bc` "%)"
 done
 ```
+
+https://github.com/sblab-bioinformatics/projects/blob/master/20181213_DNMT_preference/20190702_NCN_combinations.md#calculate-how-many-ncn-combinations-are-present-in-lambda-e-coli-hg38-genome
+
+https://raw.githubusercontent.com/sblab-bioinformatics/snAP-seq/master/leishmania.md
