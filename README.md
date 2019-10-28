@@ -25,8 +25,9 @@ Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 
 ### Contents
 
 - [System requirements and installation](README.md#system-requirements-and-installation)
-- [Sequence context diversity in reference genomes](README.md#sequence-context-diversity-in-reference-genomes)
-- [Demo](README.md#demo)
+- [Instructions for use](README.md#instructions-for-use)
+  - [Sequence context diversity in reference genomes](README.md#sequence-context-diversity-in-reference-genomes)
+- [Small demo](README.md#small-demo)
 
 
 ### System requirements and installation
@@ -43,7 +44,10 @@ Operating systems:
   - CentOS Linux release 7.3.1611 (OS used during code development)
 
 
-### Sequence context diversity in reference genomes
+
+### Instructions for use
+
+#### Sequence context diversity in reference genomes
 
 Calculating all available sequence contexts in the lambda, E.coli and human genomes as follows:
 
