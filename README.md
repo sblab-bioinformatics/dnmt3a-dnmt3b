@@ -1,9 +1,9 @@
-This repository contains data access and computational analyses for the methods developed in our DNMT3A/B sequence preference paper (*under review*)
+This repository contains data access, source code and a small demo for the custom computational analyses developed as part of our paper *Sequence preference of DNMT3A/B dictates genome-wide DNA methylation signature (under review)*
 
 
 ## Data
 
-All the raw data from the E.coli bisulfite sequencing experiments have been deposited in the ArrayExpress database at EMBL-EBI under accession number [E-MTAB-8406](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8406) (*currently only accesible to referees*)
+All the raw data from the E.coli bisulfite sequencing experiments have been deposited in the ArrayExpress database at EMBL-EBI under accession number [E-MTAB-8406](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8406) (*currently only accesible to referees - login details included in the cover letter*)
 
 Sample name | Organism | Treatment | Number of libraries
 ------------|----------|-----------|--------------------
