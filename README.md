@@ -27,22 +27,30 @@ Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 
 - [System requirements and installation](README.md#system-requirements-and-installation)
 - [Instructions for use](README.md#instructions-for-use)
   - [Sequence context diversity in reference genomes](README.md#sequence-context-diversity-in-reference-genomes)
+  - [Quality check](README.md#quality-check)
+  - [Trimming](README.md#trimming)
+  - [Prepare reference genome](README.md#prepare-reference-genome)
+  - [Alignment](README.md#alignment)
 - [Small demo](README.md#small-demo)
 
 
 ### System requirements and installation
 
-Software, for installation details follow the links:
+Software, for installation details for the individual tools follow the links:
 
 - [EMBOSS v6.6.0.0](http://emboss.sourceforge.net/)
 - [fastaRegexFinder.py v0.1.1](https://github.com/dariober/bioinformatics-cafe/tree/master/fastaRegexFinder)
 - Standard Unix tools: cut, awk, sort, uniq, grep, tr, echo ...
 - [bedtools v2.27.0](http://bedtools.readthedocs.io/en/latest/)
 - [samtools v1.3.1](http://samtools.sourceforge.net/)
+- [FastQC v0.11.3](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+- [cutadapt v1.12](http://cutadapt.readthedocs.io/en/stable/guide.html)
+- [bismark v0.19.0](https://www.bioinformatics.babraham.ac.uk/projects/bismark/)
 
-Operating systems:
+Operating system:
+
   - CentOS Linux release 7.3.1611 (OS used during code development)
-
+  - [slurm job scheduling system v19.05.0](https://slurm.schedmd.com/quickstart.html)
 
 
 ### Instructions for use
@@ -132,3 +140,61 @@ do
 done
 ```
 
+
+#### Quality check
+
+`*.fastq.gz` files to be downloaded from [E-MTAB-8406](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8406) and located in `~/fastq` folder:
+
+```bash
+cd ~/fastq
+
+mkdir ../fastqc
+
+for fq in *.fastq.gz
+do
+  bname=${fq%.fastq.gz}
+  sbatch -J $bname -o ../fastqc/$bname.log --mem 4G --wrap "fastqc --noextract --nogroup -q -o ../fastqc $fq"
+done
+```
+
+
+#### Trimming
+
+```bash
+cd ~/fastq
+
+mkdir ../fastq_trimmed
+
+for fq in *.fastq.gz
+do
+  bname=${fq%.fastq.gz}
+  sbatch -J $bname -o ../fastq_trimmed/$bname.log --mem 4G --wrap "cutadapt -a AGATCGGAAGAGC -m 10 -u 6 -o ../fastq_trimmed/$fq $fq > ../fastq_trimmed/$bname.txt"
+done
+```
+
+
+#### Prepare reference genome
+
+Genome and annotations for `Escherichia coli str. K-12 substr. MG1655` obtained from [Ensembl Bacteria release 42](http://bacteria.ensembl.org/Escherichia_coli_str_k_12_substr_mg1655/Info/Index) and located in `~/reference`
+
+```bash
+cd ~/reference
+bismark_genome_preparation .
+```
+
+
+#### Alignment
+
+```bash
+cd ~/fastq_trimmed
+
+mkdir ../bismark
+
+ref=../reference
+
+for fq in *.fastq.gz
+do
+  bname=${fq%_.fastq.gz}
+  sbatch -J $bname -o ../bismark/$bname.log --mem 32G --wrap "bismark --non_directional --unmapped -o ../bismark -p 4 $ref $fq"
+done
+```
