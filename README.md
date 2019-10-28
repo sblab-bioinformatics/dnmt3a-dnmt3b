@@ -24,12 +24,14 @@ Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 
 
 ### Contents
 
-- [Software required](README.md#software-required)
+- [System requirements and installation](README.md#system-requirements-and-installation)
 - [Sequence context diversity in reference genomes](README.md#sequence-context-diversity-in-reference-genomes)
+- [Demo](README.md#demo)
 
 
+### System requirements and installation
 
-### Software required
+Software, for installation details follow the links:
 
 - [EMBOSS v6.6.0.0](http://emboss.sourceforge.net/)
 - [fastaRegexFinder.py v0.1.1](https://github.com/dariober/bioinformatics-cafe/tree/master/fastaRegexFinder)
@@ -37,6 +39,8 @@ Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 
 - [bedtools v2.27.0](http://bedtools.readthedocs.io/en/latest/)
 - [samtools v1.3.1](http://samtools.sourceforge.net/)
 
+Operating systems:
+  - CentOS Linux release 7.3.1611 (OS used during code development)
 
 
 ### Sequence context diversity in reference genomes
@@ -122,6 +126,5 @@ do
   rm c_plus.$b c_minus.$b
   echo "C +/-" $b "bp:" $m "out of" $c "combinations (" `echo "scale=2; 100*$m/$c" | bc` "%)"
 done
-
 ```
 
