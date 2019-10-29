@@ -370,45 +370,7 @@ for (l in unique(data_cg$library)){
 }
 
 
-# Plot for each library for top and bottom 1/5/10%
-for (l in unique(data_cg$library)){
-    print(l)
-    # Obtain filtered and order matrix
-    data_cg_filter <- data_cg[library == l & !is.na(pct_met)][order(-pct_met)]
-    # Obtain top and bottom sequences
-    for (p in c(1,5,10)){
-        seqs_top <- data_cg_filter[1:round(nrow(data_cg_filter)/(100/p))]$context_cg
-        seqs_bottom <- data_cg_filter[(nrow(data_cg_filter)-round(nrow(data_cg_filter)/(100/p))):nrow(data_cg_filter)]$context_cg
-        # Plot logo
-        print(paste0("- bits top ", p, "%"))
-        gg_bits_top <- ggplot() +
-        geom_logo(seqs_top, method = 'bits') +
-        ggtitle(paste0("top ", p, "%")) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- prob top ", p, "%"))
-        gg_prob_top <- ggplot() +
-        geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- bits bottom ", p, "%"))
-        gg_bits_bottom <- ggplot() +
-        geom_logo(seqs_bottom, method = 'bits') +
-        ggtitle(paste0("bottom ", p, "%")) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- prob bottom ", p, "%"))
-        gg_prob_bottom <- ggplot() +
-        geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        ggsave(file = paste("~/figures/", l, "_topbottom", p, "pct_CG.pdf",sep = ""), arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=25))), width = 12)
-    }
-}
+
 
 # Plot for each library for top and bottom 100, 500, 1000, 2000, 5000
 for (l in unique(data_cg$library)){
@@ -499,45 +461,7 @@ for (l in unique(data_ca$library)){
     ggsave(file = paste("~/figures/", l, "_cov_CA.pdf",sep = ""), arrangeGrob(gg_bits, gg_prob, ncol = 1, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20))), width = 6)
 }
 
-# Plot for each library fot top and bottom 1/5/10%
-for (l in unique(data_ca$library)){
-    print(l)
-    # Obtain filtered and order matrix
-    data_ca_filter <- data_ca[library == l & !is.na(pct_met)][order(-pct_met)]
-    # Obtain top and bottom sequences
-    for (p in c(1,5,10)){
-        seqs_top <- data_ca_filter[1:round(nrow(data_ca_filter)/(100/p))]$context_ca
-        seqs_bottom <- data_ca_filter[(nrow(data_ca_filter)-round(nrow(data_ca_filter)/(100/p))):nrow(data_ca_filter)]$context_ca
-        # Plot logo
-        print(paste0("- bits top ", p, "%"))
-        gg_bits_top <- ggplot() +
-        geom_logo(seqs_top, method = 'bits') +
-        ggtitle(paste0("top ", p, "%")) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- prob top ", p, "%"))
-        gg_prob_top <- ggplot() +
-        geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- bits bottom ", p, "%"))
-        gg_bits_bottom <- ggplot() +
-        geom_logo(seqs_bottom, method = 'bits') +
-        ggtitle(paste0("bottom ", p, "%")) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- prob bottom ", p, "%"))
-        gg_prob_bottom <- ggplot() +
-        geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        ggsave(file = paste("~/figures/", l, "_topbottom", p, "pct_CA.pdf",sep = ""), arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20))), width = 12)
-    }
-}
+
 
 # Plot for each library fot top and bottom 100, 500, 1000, 2000, 5000
 for (l in unique(data_ca$library)){
@@ -637,45 +561,7 @@ for (l in unique(data_nonCpG$library)){
     ggsave(file = paste("~/figures/", l, "_cov_nonCpG.pdf",sep = ""), arrangeGrob(gg_bits, gg_prob, ncol = 1, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20))), width = 6)
 }
 
-# Plot for each library fot top and bottom 1/5/10%
-for (l in unique(data_nonCpG$library)){
-    print(l)
-    # Obtain filtered and order matrix
-    data_nonCpG_filter <- data_nonCpG[library == l & !is.na(pct_met)][order(-pct_met)]
-    # Obtain top and bottom sequences
-    for (p in c(1,5,10)){
-        seqs_top <- data_nonCpG_filter[1:round(nrow(data_nonCpG_filter)/(100/p))]$context_nonCpG
-        seqs_bottom <- data_nonCpG_filter[(nrow(data_nonCpG_filter)-round(nrow(data_nonCpG_filter)/(100/p))):nrow(data_nonCpG_filter)]$context_nonCpG
-        # Plot logo
-        print(paste0("- bits top ", p, "%"))
-        gg_bits_top <- ggplot() +
-        geom_logo(seqs_top, method = 'bits') +
-        ggtitle(paste0("top ", p, "%")) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- prob top ", p, "%"))
-        gg_prob_top <- ggplot() +
-        geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- bits bottom ", p, "%"))
-        gg_bits_bottom <- ggplot() +
-        geom_logo(seqs_bottom, method = 'bits') +
-        ggtitle(paste0("bottom ", p, "%")) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        print(paste0("- prob bottom ", p, "%"))
-        gg_prob_bottom <- ggplot() +
-        geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
-        theme_logo() +
-        scale_x_continuous(breaks = seq(1, 10, 1), labels = c(seq(-4, 0, 1), seq(0, 4, 1))) +
-        theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
-        ggsave(file = paste("~/figures/", l, "_topbottom", p, "pct_nonCpG.pdf",sep = ""), arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20))), width = 12)
-    }
-}
+
 
 # Plot for each library fot top and bottom 100, 500, 1000, 2000, 5000
 for (l in unique(data_nonCpG$library)){
