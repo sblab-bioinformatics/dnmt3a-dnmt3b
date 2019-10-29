@@ -1,12 +1,12 @@
 ## Contents
 
-- [Quality check](README.md#quality-check)
-- [Trimming](README.md#trimming)
-- [Prepare reference genome](README.md#prepare-reference-genome)
-- [Alignment](README.md#alignment)
-- [Deduplication](README.md#deduplication)
-- [Extract methylation](README.md#extract-methylation)
-- [Sequence context plots](README.md#sequence-context-plots)
+- [Quality check](ecoli_bs.md#quality-check)
+- [Trimming](ecoli_bs.md#trimming)
+- [Prepare reference genome](ecoli_bs.md#prepare-reference-genome)
+- [Alignment](ecoli_bs.md#alignment)
+- [Deduplication](ecoli_bs.md#deduplication)
+- [Extract methylation](ecoli_bs.md#extract-methylation)
+- [Sequence context plots](ecoli_bs.md#sequence-context-plots)
 
 
 ### Quality check
