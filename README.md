@@ -29,7 +29,7 @@ To access the publicly available human and mouse bisulfite and RNA-seq datasets 
 - [Instructions for use and demo](README.md#instructions-for-use-and-demo)
   - [Sequence context diversity in reference genomes](README.md#sequence-context-diversity-in-reference-genomes)
   - [*E.coli* bisulfite sequencing](ecoli_bs.md)
-  - [Mouse bisulfite sequencing](mouse_bs.md)
+  - [Mouse bisulfite sequencing](mouse_tko_dnmt_bs.md)
 
 
 
