@@ -54,6 +54,7 @@ Software, for installation details of the individual tools follow the links:
   - [ggplot2 v2.2.1](http://ggplot2.org/)
   - [ggseqlogo v0.1](https://cran.rstudio.com/web/packages/ggseqlogo/index.html)
   - [gridExtra v2.2.1](https://cran.r-project.org/web/packages/gridExtra/index.html)
+- [Python v2.7.12](https://www.python.org/)
 
 Operating system:
 
