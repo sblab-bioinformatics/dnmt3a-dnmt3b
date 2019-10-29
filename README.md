@@ -18,7 +18,7 @@ MSssI-30min | unmethylated Escherichia coli str. K-12 substr. MG1655 | bacterial
 MSssI-240min | unmethylated Escherichia coli str. K-12 substr. MG1655 | bacterial MSssI (240 min) | 4
 Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 | none | 4	
 
-
+To access the publicly available human and mouse bisulfite and RNA-seq datasets - have a look at the Supplementary table
 
 ## Code
 
