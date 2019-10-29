@@ -464,50 +464,6 @@ data_xcay <- copy(data[grepl("......CA.....", data$context)])
 # Extract XCAY context
 data_xcay[, context_xcay := as.vector(sapply(data_xcay$context, function(x) paste(unlist(strsplit(x, ""))[6:9], collapse = "")))]
 
-
-# Explore XCAY context for e.g. libraries DNMT3A-Abcam-240min and DNMT3B-Abcam-240min
-## DNMT3A-Abcam-240min
-data_xcay[library == "DNMT3A-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_xcay)][order(-pct_met)]
-#    context_xcay     N pct_met
-# 1:         ACAC 20902    6.06
-# 2:         GCAC 35121    4.55
-# 3:         CCAC 35757    4.17
-# 4:         ACAG 32196    4.00
-# 5:         TCAC 36891    3.85
-# 6:         CCAG 66429    3.70
-# 7:         ACAT 27622    3.57
-# 8:         GCAG 55833    3.33
-# 9:         GCAT 42194    3.03
-#10:         CCAT 38388    3.03
-#11:         TCAG 47434    2.94
-#12:         CCAA 26329    2.86
-#13:         ACAA 32313    2.86
-#14:         TCAT 40262    2.63
-#15:         GCAA 53014    2.50
-#16:         TCAA 37515    0.00
-
-
-## DNMT3B-Abcam-240min
-data_xcay[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_xcay)][order(-pct_met)]
-#    context_xcay     N pct_met
-# 1:         ACAG 31851   29.41
-# 2:         ACAA 31700   15.38
-# 3:         GCAG 55472   15.00
-# 4:         TCAG 47048   13.33
-# 5:         ACAC 20635   10.00
-# 6:         GCAA 52368    8.33
-# 7:         TCAA 36923    7.89
-# 8:         CCAG 65904    7.14
-# 9:         ACAT 27162    6.45
-#10:         GCAC 34808    4.55
-#11:         GCAT 41771    4.00
-#12:         TCAC 36475    3.85
-#13:         CCAA 25992    3.85
-#14:         TCAT 39726    3.23
-#15:         CCAC 35409    0.00
-#16:         CCAT 37969    0.00
-
-
 # load function for number of observations
 give.n <- function(x){
   return(c(y = 102, label = length(x)))
@@ -525,7 +481,7 @@ for (l in unique(data_xcay$library)){
   theme_bw() +
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_xcay_compact.pdf", sep = ""))
+  ggsave(paste("~/figures/", l, "_xcay_compact.pdf", sep = ""))
   # Numbered compact boxplot
   gg <- ggplot(data = data_xcay[library == l & !is.na(pct_met)], aes(x = reorder(context_xcay, pct_met, FUN = median), y = pct_met)) +
   geom_boxplot(outlier.shape=NA) +
@@ -537,7 +493,7 @@ for (l in unique(data_xcay$library)){
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 110)) +
   scale_y_continuous(breaks=c(0, 25, 50, 75, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_xcay_compact_number.pdf", sep = ""))
+  ggsave(paste("~/figures/", l, "_xcay_compact_number.pdf", sep = ""))
 }
 
 rm(data_xcay)
@@ -550,26 +506,6 @@ data_cay <- copy(data[grepl("......CA.....", data$context)])
 
 # Extract CAY context
 data_cay[, context_cay := as.vector(sapply(data_cay$context, function(x) paste(unlist(strsplit(x, ""))[7:9], collapse = "")))]
-
-
-# Explore CAY context for e.g. libraries DNMT3A-Abcam-240min and DNMT3B-Abcam-240min
-## DNMT3A-Abcam-240min
-data_cay[library == "DNMT3A-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_cay)][order(-pct_met)]
-#   context_cay      N pct_met
-#1:         CAC 128671    4.35
-#2:         CAG 201892    3.45
-#3:         CAT 148466    3.03
-#4:         CAA 149171    2.56
-
-
-## DNMT3B-Abcam-240min
-data_cay[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_cay)][order(-pct_met)]
-#   context_cay      N pct_met
-#1:         CAG 200275   13.04
-#2:         CAA 146983    8.33
-#3:         CAC 127327    4.17
-#4:         CAT 146628    3.70
-
 
 # load function for number of observations
 give.n <- function(x){
@@ -588,7 +524,7 @@ for (l in unique(data_cay$library)){
   theme_bw() +
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 50))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_cay_compact.pdf", sep = ""), height = 4, width = 4)
+  ggsave(paste("~/figures/", l, "_cay_compact.pdf", sep = ""), height = 4, width = 4)
   # Numbered compact boxplot
   gg <- ggplot(data = data_cay[library == l & !is.na(pct_met)], aes(x = reorder(context_cay, pct_met, FUN = median), y = pct_met)) +
   geom_boxplot(outlier.shape=NA) +
@@ -600,7 +536,7 @@ for (l in unique(data_cay$library)){
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 60)) +
   scale_y_continuous(breaks=c(0, 25, 50, 75, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_cay_compact_number.pdf", sep = ""), height = 4, width = 4)
+  ggsave(paste("~/figures/", l, "_cay_compact_number.pdf", sep = ""), height = 4, width = 4)
 }
 
 
@@ -619,13 +555,13 @@ xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black"), plot.margin = margin(0.5, 0.5, 0.5, 2, "cm")) +
 coord_cartesian(ylim = c(0, 1.5))
 
-ggsave("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_CAC_CAG.pdf", width = 5, height = 7)
+ggsave("~/figures/CAC_CAG.pdf", width = 5, height = 7)
 ```
 
 Plotting (custom logos/heatmaps):
 
 ```r
-#cd /scratchb/sblab/martin03/repository/20181213_DNMT_preference/data/20190326/methylation
+#cd ~/methylation
 #R
 
 library(data.table)
