@@ -15,16 +15,16 @@ WT (single-end): [GSE30202](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=G
 
 ## Contents
 
-- [Obtain fastq files](mouse_bs.md#obtain-fastq-files)
-- [Renaming](mouse_bs.md#renaming)
-- [Quality check](mouse_bs.md#quality-check)
-- [Trimming](mouse_bs.md#trimming)
-- [Prepare reference genome](mouse_bs.md#prepare-reference-genome)
-- [Alignment](mouse_bs.md#alignment)
-- [Deduplication](mouse_bs.md#deduplication)
-- [Sort and index deduplicated bam files, extract chr1, index and sort by name](mouse_bs.md#sort-and-index-deduplicated-bam-files-extract-chr1-index-and-sort-by-name)
-- [Extract methylation chr1](mouse_bs.md#extract-methylation-chr1)
-- [Sequence context plots chr1](mouse_bs.md#sequence-context-plots-chr1)
+- [Obtain fastq files](mouse_tko_dnmt_bs.md#obtain-fastq-files)
+- [Renaming](mouse_tko_dnmt_bs.md#renaming)
+- [Quality check](mouse_tko_dnmt_bs.md#quality-check)
+- [Trimming](mouse_tko_dnmt_bs.md#trimming)
+- [Prepare reference genome](mouse_tko_dnmt_bs.md#prepare-reference-genome)
+- [Alignment](mouse_tko_dnmt_bs.md#alignment)
+- [Deduplication](mouse_tko_dnmt_bs.md#deduplication)
+- [Sort and index deduplicated bam files, extract chr1, index and sort by name](mouse_tko_dnmt_bs.md#sort-and-index-deduplicated-bam-files-extract-chr1-index-and-sort-by-name)
+- [Extract methylation chr1](mouse_tko_dnmt_bs.md#extract-methylation-chr1)
+- [Sequence context plots chr1](mouse_tko_dnmt_bs.md#sequence-context-plots-chr1)
 
 
 
