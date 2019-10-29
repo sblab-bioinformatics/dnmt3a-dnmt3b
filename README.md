@@ -38,7 +38,7 @@ Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 
 
 ### System requirements and installation
 
-Software, for installation details for the individual tools follow the links:
+Software, for installation details of the individual tools follow the links:
 
 - [EMBOSS v6.6.0.0](http://emboss.sourceforge.net/)
 - [fastaRegexFinder.py v0.1.1](https://github.com/dariober/bioinformatics-cafe/tree/master/fastaRegexFinder)
@@ -48,6 +48,7 @@ Software, for installation details for the individual tools follow the links:
 - [FastQC v0.11.3](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - [cutadapt v1.12](http://cutadapt.readthedocs.io/en/stable/guide.html)
 - [bismark v0.19.0](https://www.bioinformatics.babraham.ac.uk/projects/bismark/)
+- [tableCat.py](https://github.com/dariober/bioinformatics-cafe/blob/master/tableCat/tableCat.py)
 - [R v3.3.2](https://www.r-project.org/). Libraries:
   - [data.table v1.10.4](https://cran.r-project.org/web/packages/data.table/index.html)
   - [ggplot2 v2.2.1](http://ggplot2.org/)
@@ -148,7 +149,7 @@ done
 
 #### Quality check
 
-`*.fastq.gz` files to be downloaded from [E-MTAB-8406](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8406) and located in `~/fastq` folder:
+`*.fastq.gz` files to be downloaded from [E-MTAB-8406](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8406) and located in the `~/fastq` folder:
 
 ```bash
 cd ~/fastq
@@ -312,7 +313,7 @@ library(ggplot2)
 options(width = 300)
 
 # Load data
-data <- fread("tableCat.py -i /scratchb/sblab/martin03/repository/20181213_DNMT_preference/data/20190326/methylation/*.context.txt -r _L001_R1_001_bismark_bt2.multiple.deduplicated.context.txt")
+data <- fread("tableCat.py -i ~/methylation/*.context.txt -r _L001_R1_001_bismark_bt2.multiple.deduplicated.context.txt")
 setnames(data, c("ref", "start", "end", "cnt_met", "cnt_unmet", "strand", "context", "library"))
 
 data[, library := sapply(data$library, function(x) unlist(strsplit(x, "_"))[1])]
@@ -332,27 +333,6 @@ data_xcy <- copy(data)
 # Extract XCY context
 data_xcy[, context_xcy := as.vector(sapply(data_xcy$context, function(x) paste(unlist(strsplit(x, ""))[6:8], collapse = "")))]
 
-# Explore XCY context for e.g. library DNMT3B-Abcam-240min
-data_xcy[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_xcy)][order(-pct_met)]
-#    context_xcy      N pct_met
-# 1:         ACG 141173   57.14
-# 2:         TCG 138123   50.00
-# 3:         GCG 223988   45.00
-# 4:         CCG 167518   37.50
-# 5:         ACA 111348   15.00
-# 6:         GCA 184419    7.69
-# 7:         ACT  95133    7.14
-# 8:         GCT 155339    6.67
-# 9:         TCA 160172    6.25
-#10:         CCA 165274    4.17
-#11:         ACC 143463    4.17
-#12:         TCT 107414    3.45
-#13:         GCC 178590    2.86
-#14:         CCC  90656    0.00
-#15:         TCC 107317    0.00
-#16:         CCT  96499    0.00
-
-
 # load function for number of observations
 give.n <- function(x){
   return(c(y = 102, label = length(x)))
@@ -370,7 +350,7 @@ for (l in unique(data_xcy$library)){
   theme_bw() +
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190329_", l, "_xcy_compact.pdf",sep = ""))
+  ggsave(paste("~/figures/", l, "_xcy_compact.pdf",sep = ""))
   # Numbered compact boxplot
   gg <- ggplot(data = data_xcy[library == l & !is.na(pct_met)], aes(x = reorder(context_xcy, pct_met, FUN = median), y = pct_met)) +
   geom_boxplot(outlier.shape=NA) +
@@ -382,7 +362,7 @@ for (l in unique(data_xcy$library)){
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 110)) +
   scale_y_continuous(breaks=c(0, 25, 50, 75, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190329_", l, "_xcy_compact_number.pdf",sep = ""))
+  ggsave(paste("~/figures/", l, "_xcy_compact_number.pdf",sep = ""))
 }
 
 rm(data_xcy)
@@ -395,49 +375,6 @@ data_xcgy <- copy(data[grepl("......CG.....", data$context)])
 
 # Extract XCGY context
 data_xcgy[, context_xcgy := as.vector(sapply(data_xcgy$context, function(x) paste(unlist(strsplit(x, ""))[6:9], collapse = "")))]
-
-
-# Explore XCGY context for e.g. libraries DNMT3A-Abcam-240min and DNMT3B-Abcam-240min
-## DNMT3A-Abcam-240min
-data_xcgy[library == "DNMT3A-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_xcgy)][order(-pct_met)]
-#    context_xcgy     N pct_met
-# 1:         CCGC 55726   46.15
-# 2:         ACGC 51048   45.45
-# 3:         TCGC 49777   45.45
-# 4:         GCGC 68921   40.00
-# 5:         ACGT 28263   37.50
-# 6:         CCGT 35097   36.36
-# 7:         TCGT 28071   35.29
-# 8:         CCGA 31141   34.48
-# 9:         CCGG 46820   32.43
-#10:         GCGT 51058   32.00
-#11:         ACGA 28064   31.03
-#12:         ACGG 35123   29.41
-#13:         TCGG 31161   29.17
-#14:         GCGA 49775   28.00
-#15:         TCGA 30174   25.93
-#16:         GCGG 55758   25.00
-
-## DNMT3B-Abcam-240min
-data_xcgy[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_xcgy)][order(-pct_met)]
-#    context_xcgy     N pct_met
-# 1:         TCGG 30986   67.50
-# 2:         ACGG 34830   66.67
-# 3:         TCGA 29912   62.50
-# 4:         ACGA 27759   61.54
-# 5:         GCGG 55410   57.14
-# 6:         CCGG 46522   56.00
-# 7:         CCGA 30850   55.56
-# 8:         GCGA 49406   54.55
-# 9:         ACGC 50560   53.85
-#10:         ACGT 28024   45.00
-#11:         TCGC 49357   42.86
-#12:         GCGC 68432   36.11
-#13:         GCGT 50740   33.33
-#14:         TCGT 27868   30.00
-#15:         CCGC 55270   23.81
-#16:         CCGT 34876   18.18
-
 
 # load function for number of observations
 give.n <- function(x){
@@ -456,7 +393,7 @@ for (l in unique(data_xcgy$library)){
   theme_bw() +
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190329_", l, "_xcgy_compact.pdf", sep = ""))
+  ggsave(paste("~/figures/", l, "_xcgy_compact.pdf", sep = ""))
   # Numbered compact boxplot
   gg <- ggplot(data = data_xcgy[library == l & !is.na(pct_met)], aes(x = reorder(context_xcgy, pct_met, FUN = median), y = pct_met)) +
   geom_boxplot(outlier.shape=NA) +
@@ -468,7 +405,7 @@ for (l in unique(data_xcgy$library)){
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 110)) +
   scale_y_continuous(breaks=c(0, 25, 50, 75, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190329_", l, "_xcgy_compact_number.pdf", sep = ""))
+  ggsave(paste("~/figures/", l, "_xcgy_compact_number.pdf", sep = ""))
 }
 
 rm(data_xcgy)
@@ -481,39 +418,6 @@ data_wxcgyz <- copy(data[grepl("......CG.....", data$context)])
 
 # Extract WXCGYZ context
 data_wxcgyz[, context_wxcgyz := as.vector(sapply(data_wxcgyz$context, function(x) paste(unlist(strsplit(x, ""))[5:10], collapse = "")))]
-
-
-# Explore WXCGYZ context for e.g. libraries DNMT3A-Abcam-240min and DNMT3B-Abcam-240min
-## DNMT3A-Abcam-240min
-data_wxcgyz[library == "DNMT3A-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_wxcgyz)][order(-pct_met)]
-#     context_wxcgyz    N pct_met
-#  1:         TACGCC 3237   66.67
-#  2:         TACGTC 1237   65.71
-#  3:         TCCGCC 3212   65.22
-#  4:         TCCGTC 1557   62.50
-#  5:         CACGCC 3964   62.50
-# ---                            
-#252:         GGCGTG 3961   15.15
-#253:         GGCGGG 2991   15.00
-#254:         AGCGTG 2956   14.71
-#255:         GTCGGG 1559   14.29
-#256:         AGCGGG 2595   12.90
-
-## DNMT3B-Abcam-240min
-data_wxcgyz[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_wxcgyz)][order(-pct_met)]
-#     context_wxcgyz    N pct_met
-#  1:         GTCGGC 2723   73.91
-#  2:         ATCGGC 4304   73.68
-#  3:         TACGGC 2376   73.33
-#  4:         TGCGGC 4289   73.08
-#  5:         TTCGGC 3150   72.73
-# ---                            
-#252:         GCCGCA 4275   11.11
-#253:         GCCGTT 4190   11.11
-#254:         GCCGCG 4077   10.34
-#255:         ACCGTG 2522    9.09
-#256:         GCCGTG 2635    8.33
-
 
 # load function for number of observations
 give.n <- function(x){
@@ -532,7 +436,7 @@ for (l in unique(data_wxcgyz$library)){
   theme_bw() +
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190329_", l, "_wxcgyz_compact.pdf",sep = ""), height = 140, units= 'cm', limitsize = FALSE)
+  ggsave(paste("~/figures/", l, "_wxcgyz_compact.pdf",sep = ""), height = 140, units= 'cm', limitsize = FALSE)
   # Numbered compact boxplot
   gg <- ggplot(data = data_wxcgyz[library == l & !is.na(pct_met)], aes(x = reorder(context_wxcgyz, pct_met, FUN = median), y = pct_met)) +
   geom_boxplot(outlier.shape=NA) +
@@ -544,99 +448,8 @@ for (l in unique(data_wxcgyz$library)){
   theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
   coord_flip(ylim = c(0, 110)) +
   scale_y_continuous(breaks=c(0, 25, 50, 75, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190329_", l, "_wxcgyz_compact_number.pdf",sep = ""), height = 140, units= 'cm', limitsize = FALSE)
+  ggsave(paste("~/figures/", l, "_wxcgyz_compact_number.pdf",sep = ""), height = 140, units= 'cm', limitsize = FALSE)
 }
 
 rm(data_wxcgyz)
-
-
-############
-# UWXCGYZV #
-############
-data_uwxcgyzv <- copy(data[grepl("......CG.....", data$context)])
-
-# Extract UWXCGYZV context
-data_uwxcgyzv[, context_uwxcgyzv := as.vector(sapply(data_uwxcgyzv$context, function(x) paste(unlist(strsplit(x, ""))[4:11], collapse = "")))]
-
-
-# Explore UWXCGYZV context for e.g. libraries DNMT3A-Abcam-240min and DNMT3B-Abcam-240min
-## DNMT3A-Abcam-240min
-data_uwxcgyzv[library == "DNMT3A-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_uwxcgyzv)][order(-pct_met)]
-#      context_uwxcgyzv   N pct_met
-#   1:         GTACGTCA  99  71.880
-#   2:         CTACGTCA  85  70.370
-#   3:         TTACGTCA 170  69.440
-#   4:         GTCCGCCA 203  68.750
-#   5:         TTACGCCA 382  68.750
-#  ---                             
-#4092:         AATCGGAG  42   7.155
-#4093:         TAGCGGAG  46   6.965
-#4094:         AATCGGGG  66   6.905
-#4095:         AATCGGGT 128   6.670
-#4096:         TAGCGGGG  53   6.450
-
-
-## DNMT3B-Abcam-240min
-data_uwxcgyzv[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_uwxcgyzv)][order(-pct_met)]
-#      context_uwxcgyzv   N pct_met
-#   1:         GTACGGGG  40  76.920
-#   2:         AGTCGGCT  70  76.235
-#   3:         TTACGGCG 221  76.190
-#   4:         ATGCGGCG 538  76.000
-#   5:         CATCGGCG 424  75.930
-#  ---                             
-#4092:         GGCCGCGA 132   5.260
-#4093:         GGCCGTGG 110   5.130
-#4094:         AACCGCGA 219   5.000
-#4095:         TACCGTGG 202   4.760
-#4096:         AACCGTGG 244   3.850
-
-
-# Plot for each library
-for (l in unique(data_uwxcgyzv$library)){
-  print(l)
-  # Normal compact boxplot
-  gg <- ggplot(data = data_uwxcgyzv[library == l & !is.na(pct_met)], aes(x = reorder(context_uwxcgyzv, pct_met, FUN = median), y = pct_met)) +
-  geom_boxplot(outlier.shape=NA) +
-  ylab(expression("% Methylation")) +
-  xlab(expression("")) +
-  ggtitle(l) +
-  theme_bw() +
-  theme(axis.title = element_text(size=16), axis.text.x = element_text(size=16, color = "black"), axis.text.y = element_blank(), axis.ticks.y = element_blank(), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
-  coord_flip(ylim = c(0, 100))
-  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190329_", l, "_uwxcgyzv_compact.pdf",sep = ""), height = 140, units= 'cm', limitsize = FALSE)
-}
-
-rm(data_uwxcgyzv)
 ```
-
-Normal compact boxplots:
-
-XCY | XCGY | WXCGYZ | UWXCGYZV
-----|------|--------|---------
-[DNMT3A-Abcam-30min](figures/20190329_DNMT3A-Abcam-30min_xcy_compact.pdf) | [DNMT3A-Abcam-30min](figures/20190329_DNMT3A-Abcam-30min_xcgy_compact.pdf) | [DNMT3A-Abcam-30min](figures/20190329_DNMT3A-Abcam-30min_wxcgyz_compact.pdf) | [DNMT3A-Abcam-30min](figures/20190329_DNMT3A-Abcam-30min_uwxcgyzv_compact.pdf)
-[DNMT3A-Abcam-120min](figures/20190329_DNMT3A-Abcam-120min_xcy_compact.pdf) | [DNMT3A-Abcam-120min](figures/20190329_DNMT3A-Abcam-120min_xcgy_compact.pdf) | [DNMT3A-Abcam-120min](figures/20190329_DNMT3A-Abcam-120min_wxcgyz_compact.pdf) | [DNMT3A-Abcam-120min](figures/20190329_DNMT3A-Abcam-120min_uwxcgyzv_compact.pdf)
-[DNMT3A-Abcam-240min](figures/20190329_DNMT3A-Abcam-240min_xcy_compact.pdf) | [DNMT3A-Abcam-240min](figures/20190329_DNMT3A-Abcam-240min_xcgy_compact.pdf) | [DNMT3A-Abcam-240min](figures/20190329_DNMT3A-Abcam-240min_wxcgyz_compact.pdf) | [DNMT3A-Abcam-240min](figures/20190329_DNMT3A-Abcam-240min_uwxcgyzv_compact.pdf)
-[DNMT3B-Abcam-30min](figures/20190329_DNMT3B-Abcam-30min_xcy_compact.pdf) | [DNMT3B-Abcam-30min](figures/20190329_DNMT3B-Abcam-30min_xcgy_compact.pdf) | [DNMT3B-Abcam-30min](figures/20190329_DNMT3B-Abcam-30min_wxcgyz_compact.pdf) | [DNMT3B-Abcam-30min](figures/20190329_DNMT3B-Abcam-30min_uwxcgyzv_compact.pdf)
-[DNMT3B-Abcam-120min](figures/20190329_DNMT3B-Abcam-120min_xcy_compact.pdf) | [DNMT3B-Abcam-120min](figures/20190329_DNMT3B-Abcam-120min_xcgy_compact.pdf) | [DNMT3B-Abcam-120min](figures/20190329_DNMT3B-Abcam-120min_wxcgyz_compact.pdf) | [DNMT3B-Abcam-120min](figures/20190329_DNMT3B-Abcam-120min_uwxcgyzv_compact.pdf)
-[DNMT3B-Abcam-240min](figures/20190329_DNMT3B-Abcam-240min_xcy_compact.pdf) | [DNMT3B-Abcam-240min](figures/20190329_DNMT3B-Abcam-240min_xcgy_compact.pdf) | [DNMT3B-Abcam-240min](figures/20190329_DNMT3B-Abcam-240min_wxcgyz_compact.pdf) | [DNMT3B-Abcam-240min](figures/20190329_DNMT3B-Abcam-240min_uwxcgyzv_compact.pdf)
-[MSssI-10min](figures/20190329_MSssI-10min_xcy_compact.pdf) | [MSssI-10min](figures/20190329_MSssI-10min_xcgy_compact.pdf) | [MSssI-10min](figures/20190329_MSssI-10min_wxcgyz_compact.pdf) | [MSssI-10min](figures/20190329_MSssI-10min_uwxcgyzv_compact.pdf)
-[MSssI-30min](figures/20190329_MSssI-30min_xcy_compact.pdf) | [MSssI-30min](figures/20190329_MSssI-30min_xcgy_compact.pdf) | [MSssI-30min](figures/20190329_MSssI-30min_wxcgyz_compact.pdf) | [MSssI-30min](figures/20190329_MSssI-30min_uwxcgyzv_compact.pdf)
-[MSssI-240min](figures/20190329_MSssI-240min_xcy_compact.pdf) | [MSssI-240min](figures/20190329_MSssI-240min_xcgy_compact.pdf) | [MSssI-240min](figures/20190329_MSssI-240min_wxcgyz_compact.pdf) | [MSssI-240min](figures/20190329_MSssI-240min_uwxcgyzv_compact.pdf)
-
-Numbered compact boxplots:
-
-XCY | XCGY | WXCGYZ
-----|------|-------
-[DNMT3A-Abcam-30min](figures/20190329_DNMT3A-Abcam-30min_xcy_compact_number.pdf) | [DNMT3A-Abcam-30min](figures/20190329_DNMT3A-Abcam-30min_xcgy_compact_number.pdf) | [DNMT3A-Abcam-30min](figures/20190329_DNMT3A-Abcam-30min_wxcgyz_compact_number.pdf)
-[DNMT3A-Abcam-120min](figures/20190329_DNMT3A-Abcam-120min_xcy_compact_number.pdf) | [DNMT3A-Abcam-120min](figures/20190329_DNMT3A-Abcam-120min_xcgy_compact_number.pdf) | [DNMT3A-Abcam-120min](figures/20190329_DNMT3A-Abcam-120min_wxcgyz_compact_number.pdf)
-[DNMT3A-Abcam-240min](figures/20190329_DNMT3A-Abcam-240min_xcy_compact_number.pdf) | [DNMT3A-Abcam-240min](figures/20190329_DNMT3A-Abcam-240min_xcgy_compact_number.pdf) | [DNMT3A-Abcam-240min](figures/20190329_DNMT3A-Abcam-240min_wxcgyz_compact_number.pdf)
-[DNMT3B-Abcam-30min](figures/20190329_DNMT3B-Abcam-30min_xcy_compact_number.pdf) | [DNMT3B-Abcam-30min](figures/20190329_DNMT3B-Abcam-30min_xcgy_compact_number.pdf) | [DNMT3B-Abcam-30min](figures/20190329_DNMT3B-Abcam-30min_wxcgyz_compact_number.pdf)
-[DNMT3B-Abcam-120min](figures/20190329_DNMT3B-Abcam-120min_xcy_compact_number.pdf) | [DNMT3B-Abcam-120min](figures/20190329_DNMT3B-Abcam-120min_xcgy_compact_number.pdf) | [DNMT3B-Abcam-120min](figures/20190329_DNMT3B-Abcam-120min_wxcgyz_compact_number.pdf)
-[DNMT3B-Abcam-240min](figures/20190329_DNMT3B-Abcam-240min_xcy_compact_number.pdf) | [DNMT3B-Abcam-240min](figures/20190329_DNMT3B-Abcam-240min_xcgy_compact_number.pdf) | [DNMT3B-Abcam-240min](figures/20190329_DNMT3B-Abcam-240min_wxcgyz_compact_number.pdf)
-[MSssI-10min](figures/20190329_MSssI-10min_xcy_compact_number.pdf) | [MSssI-10min](figures/20190329_MSssI-10min_xcgy_compact_number.pdf) | [MSssI-10min](figures/20190329_MSssI-10min_wxcgyz_compact_number.pdf)
-[MSssI-30min](figures/20190329_MSssI-30min_xcy_compact_number.pdf) | [MSssI-30min](figures/20190329_MSssI-30min_xcgy_compact_number.pdf) | [MSssI-30min](figures/20190329_MSssI-30min_wxcgyz_compact_number.pdf)
-[MSssI-240min](figures/20190329_MSssI-240min_xcy_compact_number.pdf) | [MSssI-240min](figures/20190329_MSssI-240min_xcgy_compact_number.pdf) | [MSssI-240min](figures/20190329_MSssI-240min_wxcgyz_compact_number.pdf)
-
-
-
