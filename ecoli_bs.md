@@ -447,12 +447,12 @@ data <- data[cnt_met + cnt_unmet > 5]
 
 
 ###########
-# -5_C_+5 #
+# -4_C_+4 #
 ###########
 data_c <- copy(data)
 
-# Extract -5_C_+5 context
-data_c[, context_c := as.vector(sapply(data_c$context, function(x) paste(unlist(strsplit(x, ""))[2:12], collapse = "")))]
+# Extract -4_C_+4 context
+data_c[, context_c := as.vector(sapply(data_c$context, function(x) paste(unlist(strsplit(x, ""))[3:11], collapse = "")))]
 
 # Count distributions
 gg <- ggplot(data_c[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
@@ -521,12 +521,12 @@ rm(data_c)
 
 
 ############
-# -5_CG_+5 #
+# -4_CG_+4 #
 ############
 data_cg <- copy(data[grepl("......CG.....", data$context)])
 
-# Extract -5_CG_+5 context
-data_cg[, context_cg := as.vector(sapply(data_cg$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+# Extract -4_CG_\+4 context
+data_cg[, context_cg := as.vector(sapply(data_cg$context, function(x) paste(unlist(strsplit(x, ""))[3:12], collapse = "")))]
 
 # Count distributions
 gg <- ggplot(data_cg[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
@@ -595,12 +595,12 @@ rm(data_cg)
 
 
 ############
-# -5_CA_+5 #
+# -4_CA_+4 #
 ############
 data_ca <- copy(data[grepl("......CA.....", data$context)])
 
-# Extract -5_CA_+5 context
-data_ca[, context_ca := as.vector(sapply(data_ca$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+# Extract -4_CA_+4 context
+data_ca[, context_ca := as.vector(sapply(data_ca$context, function(x) paste(unlist(strsplit(x, ""))[3:12], collapse = "")))]
 
 # Count distributions
 gg <- ggplot(data_ca[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
@@ -669,12 +669,12 @@ rm(data_ca)
 
 
 ############
-# -5_CC_+5 #
+# -4_CC_+4 #
 ############
 data_cc <- copy(data[grepl("......CC.....", data$context)])
 
-# Extract -5_CC_+5 context
-data_cc[, context_cc := as.vector(sapply(data_cc$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+# Extract -4_CC_+4 context
+data_cc[, context_cc := as.vector(sapply(data_cc$context, function(x) paste(unlist(strsplit(x, ""))[3:12], collapse = "")))]
 
 # Count distributions
 gg <- ggplot(data_cc[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
@@ -743,12 +743,12 @@ rm(data_cc)
 
 
 ############
-# -5_CT_+5 #
+# -4_CT_+4 #
 ############
 data_ct <- copy(data[grepl("......CT.....", data$context)])
 
-# Extract -5_CT_+5 context
-data_ct[, context_ct := as.vector(sapply(data_ct$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+# Extract -4_CT_+4 context
+data_ct[, context_ct := as.vector(sapply(data_ct$context, function(x) paste(unlist(strsplit(x, ""))[3:12], collapse = "")))]
 
 # Count distributions
 gg <- ggplot(data_ct[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
