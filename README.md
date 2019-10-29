@@ -1,4 +1,4 @@
-This repository contains data access, source code and a small demo for the custom computational analyses developed as part of our paper **Sequence preference of DNMT3A/B dictates genome-wide DNA methylation signature** *(under review)*
+This repository contains data access, source code and demo of the custom computational analyses developed as part of our paper **Sequence preference of DNMT3A/B dictates genome-wide DNA methylation signature** *(under review)*
 
 
 ## Data
@@ -25,7 +25,7 @@ Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 
 ### Contents
 
 - [System requirements and installation](README.md#system-requirements-and-installation)
-- [Instructions for use](README.md#instructions-for-use)
+- [Instructions for use and demo](README.md#instructions-for-use-and-demo)
   - [Sequence context diversity in reference genomes](README.md#sequence-context-diversity-in-reference-genomes)
   - [Quality check](README.md#quality-check)
   - [Trimming](README.md#trimming)
@@ -34,8 +34,6 @@ Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 
   - [Deduplication](README.md#deduplication)
   - [Extract methylation](README.md#extract-methylation)
   - [Sequence context plots](README.md#sequence-context-plots)
-  
-- [Small demo](README.md#small-demo)
 
 
 ### System requirements and installation
@@ -60,7 +58,7 @@ Operating system:
   - [slurm job scheduling system v19.05.0](https://slurm.schedmd.com/quickstart.html)
 
 
-### Instructions for use
+### Instructions for use and demo
 
 #### Sequence context diversity in reference genomes
 
