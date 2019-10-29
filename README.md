@@ -52,6 +52,8 @@ Software, for installation details of the individual tools follow the links:
 - [R v3.3.2](https://www.r-project.org/). Libraries:
   - [data.table v1.10.4](https://cran.r-project.org/web/packages/data.table/index.html)
   - [ggplot2 v2.2.1](http://ggplot2.org/)
+  - [ggseqlogo v0.1](https://cran.rstudio.com/web/packages/ggseqlogo/index.html)
+  - [gridExtra v2.2.1](https://cran.r-project.org/web/packages/gridExtra/index.html)
 
 Operating system:
 
@@ -452,4 +454,568 @@ for (l in unique(data_wxcgyz$library)){
 }
 
 rm(data_wxcgyz)
+
+
+########
+# XCAY #
+########
+data_xcay <- copy(data[grepl("......CA.....", data$context)])
+
+# Extract XCAY context
+data_xcay[, context_xcay := as.vector(sapply(data_xcay$context, function(x) paste(unlist(strsplit(x, ""))[6:9], collapse = "")))]
+
+
+# Explore XCAY context for e.g. libraries DNMT3A-Abcam-240min and DNMT3B-Abcam-240min
+## DNMT3A-Abcam-240min
+data_xcay[library == "DNMT3A-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_xcay)][order(-pct_met)]
+#    context_xcay     N pct_met
+# 1:         ACAC 20902    6.06
+# 2:         GCAC 35121    4.55
+# 3:         CCAC 35757    4.17
+# 4:         ACAG 32196    4.00
+# 5:         TCAC 36891    3.85
+# 6:         CCAG 66429    3.70
+# 7:         ACAT 27622    3.57
+# 8:         GCAG 55833    3.33
+# 9:         GCAT 42194    3.03
+#10:         CCAT 38388    3.03
+#11:         TCAG 47434    2.94
+#12:         CCAA 26329    2.86
+#13:         ACAA 32313    2.86
+#14:         TCAT 40262    2.63
+#15:         GCAA 53014    2.50
+#16:         TCAA 37515    0.00
+
+
+## DNMT3B-Abcam-240min
+data_xcay[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_xcay)][order(-pct_met)]
+#    context_xcay     N pct_met
+# 1:         ACAG 31851   29.41
+# 2:         ACAA 31700   15.38
+# 3:         GCAG 55472   15.00
+# 4:         TCAG 47048   13.33
+# 5:         ACAC 20635   10.00
+# 6:         GCAA 52368    8.33
+# 7:         TCAA 36923    7.89
+# 8:         CCAG 65904    7.14
+# 9:         ACAT 27162    6.45
+#10:         GCAC 34808    4.55
+#11:         GCAT 41771    4.00
+#12:         TCAC 36475    3.85
+#13:         CCAA 25992    3.85
+#14:         TCAT 39726    3.23
+#15:         CCAC 35409    0.00
+#16:         CCAT 37969    0.00
+
+
+# load function for number of observations
+give.n <- function(x){
+  return(c(y = 102, label = length(x)))
+}
+
+# Plot for each library
+for (l in unique(data_xcay$library)){
+  print(l)
+  # Normal compact boxplot
+  gg <- ggplot(data = data_xcay[library == l & !is.na(pct_met)], aes(x = reorder(context_xcay, pct_met, FUN = median), y = pct_met)) +
+  geom_boxplot(outlier.shape=NA) +
+  ylab(expression("% Methylation")) +
+  xlab(expression("")) +
+  ggtitle(l) +
+  theme_bw() +
+  theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
+  coord_flip(ylim = c(0, 100))
+  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_xcay_compact.pdf", sep = ""))
+  # Numbered compact boxplot
+  gg <- ggplot(data = data_xcay[library == l & !is.na(pct_met)], aes(x = reorder(context_xcay, pct_met, FUN = median), y = pct_met)) +
+  geom_boxplot(outlier.shape=NA) +
+  ylab(expression("% Methylation")) +
+  xlab(expression("")) +
+  ggtitle(l) +
+  theme_bw() +
+  stat_summary(fun.data = give.n, geom = "text", hjust = 0) +
+  theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
+  coord_flip(ylim = c(0, 110)) +
+  scale_y_continuous(breaks=c(0, 25, 50, 75, 100))
+  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_xcay_compact_number.pdf", sep = ""))
+}
+
+rm(data_xcay)
+
+
+#######
+# CAY #
+#######
+data_cay <- copy(data[grepl("......CA.....", data$context)])
+
+# Extract CAY context
+data_cay[, context_cay := as.vector(sapply(data_cay$context, function(x) paste(unlist(strsplit(x, ""))[7:9], collapse = "")))]
+
+
+# Explore CAY context for e.g. libraries DNMT3A-Abcam-240min and DNMT3B-Abcam-240min
+## DNMT3A-Abcam-240min
+data_cay[library == "DNMT3A-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_cay)][order(-pct_met)]
+#   context_cay      N pct_met
+#1:         CAC 128671    4.35
+#2:         CAG 201892    3.45
+#3:         CAT 148466    3.03
+#4:         CAA 149171    2.56
+
+
+## DNMT3B-Abcam-240min
+data_cay[library == "DNMT3B-Abcam-240min", .(.N, pct_met = median(pct_met, na.rm=TRUE)), by = .(context_cay)][order(-pct_met)]
+#   context_cay      N pct_met
+#1:         CAG 200275   13.04
+#2:         CAA 146983    8.33
+#3:         CAC 127327    4.17
+#4:         CAT 146628    3.70
+
+
+# load function for number of observations
+give.n <- function(x){
+  return(c(y = 52, label = length(x)))
+}
+
+# Plot for each library
+for (l in unique(data_cay$library)){
+  print(l)
+  # Normal compact boxplot
+  gg <- ggplot(data = data_cay[library == l & !is.na(pct_met)], aes(x = reorder(context_cay, pct_met, FUN = median), y = pct_met)) +
+  geom_boxplot(outlier.shape=NA) +
+  ylab(expression("% Methylation")) +
+  xlab(expression("")) +
+  ggtitle(l) +
+  theme_bw() +
+  theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
+  coord_flip(ylim = c(0, 50))
+  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_cay_compact.pdf", sep = ""), height = 4, width = 4)
+  # Numbered compact boxplot
+  gg <- ggplot(data = data_cay[library == l & !is.na(pct_met)], aes(x = reorder(context_cay, pct_met, FUN = median), y = pct_met)) +
+  geom_boxplot(outlier.shape=NA) +
+  ylab(expression("% Methylation")) +
+  xlab(expression("")) +
+  ggtitle(l) +
+  theme_bw() +
+  stat_summary(fun.data = give.n, geom = "text", hjust = 0) +
+  theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"), plot.title = element_text(face="bold", size=16, hjust = 0.5)) +
+  coord_flip(ylim = c(0, 60)) +
+  scale_y_continuous(breaks=c(0, 25, 50, 75, 100))
+  ggsave(paste("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_", l, "_cay_compact_number.pdf", sep = ""), height = 4, width = 4)
+}
+
+
+###########
+# CAC/CAG #
+###########
+cac_cag <- dcast(data_cay[, .(pct_met = median(pct_met, na.rm=TRUE)), by = .(library, context_cay)], library ~ context_cay, value.var = "pct_met")
+cac_cag[, CAC_CAG := CAC/CAG]
+cac_cag$library <- factor(cac_cag$library, levels=c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA"))
+
+gg <- ggplot(cac_cag, aes(x=library, y=CAC_CAG)) +
+geom_bar(stat="identity", color="black", position=position_dodge(), alpha = 0.5) +
+theme_classic() +
+ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
+xlab("") +
+theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black"), plot.margin = margin(0.5, 0.5, 0.5, 2, "cm")) +
+coord_cartesian(ylim = c(0, 1.5))
+
+ggsave("/Users/martin03/github/sblab-bioinformatics/projects/20181213_DNMT_preference/figures/20190626_CAC_CAG.pdf", width = 5, height = 7)
+```
+
+Plotting (custom logos/heatmaps):
+
+```r
+#cd /scratchb/sblab/martin03/repository/20181213_DNMT_preference/data/20190326/methylation
+#R
+
+library(data.table)
+library(ggplot2)
+library(ggseqlogo)
+library(grid)
+library(gridExtra)
+
+# Set width
+options(width = 300)
+
+# Load data
+data <- fread("tableCat.py -i ~/methylation/*.context.txt -r _L001_R1_001_bismark_bt2.multiple.deduplicated.context.txt")
+setnames(data, c("ref", "start", "end", "cnt_met", "cnt_unmet", "strand", "context", "library"))
+
+data[, library := sapply(data$library, function(x) unlist(strsplit(x, "_"))[1])]
+
+# Calculate rounded percentage methylation
+data[, pct_met := round(100 * cnt_met/(cnt_met+cnt_unmet), 2)]
+
+# Filter with cnt_met + cnt_unmet > 5
+data <- data[cnt_met + cnt_unmet > 5]
+
+
+###########
+# -5_C_+5 #
+###########
+data_c <- copy(data)
+
+# Extract -5_C_+5 context
+data_c[, context_c := as.vector(sapply(data_c$context, function(x) paste(unlist(strsplit(x, ""))[2:12], collapse = "")))]
+
+# Count distributions
+gg <- ggplot(data_c[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("depth") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3) +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"))
+
+ggsave('~/figures/count_distribution_c.pdf', width = 24, height = 24, units = 'cm')
+
+# % methylation distributions
+gg <- ggplot(data_c[!is.na(pct_met) & (cnt_met+cnt_unmet) > 9], aes(x=pct_met)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("% methylation") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3, scales = "free_y") +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black")) +
+coord_cartesian(xlim = c(0, 100))
+
+ggsave('~/figures/pctmet_distribution_c.pdf', width = 28, height = 24, units = 'cm')
+
+
+# Plot for each library
+for (l in unique(data_c$library)){
+  print(l)
+  # Obtain filtered and order matrix
+  data_c_filter <- data_c[library == l & !is.na(pct_met) & (cnt_met+cnt_unmet) > 9][order(-pct_met)]
+  # Obtain top and bottom sequences
+  seqs_top <- data_c_filter[1:round(nrow(data_c_filter)/10)]$context_c
+  seqs_bottom <- data_c_filter[(nrow(data_c_filter)-round(nrow(data_c_filter)/10)):nrow(data_c_filter)]$context_c
+  # Plot logo
+  print("- bits top 10%")
+  gg_bits_top <- ggplot() +
+  geom_logo(seqs_top, method = 'bits', rev_stack_order = T) +
+  ggtitle("top 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 11, 1), labels =  seq(-5, 5, 1)) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob top 10%")
+  gg_prob_top <- ggplot() +
+  geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 11, 1), labels = seq(-5, 5, 1)) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- bits bottom 10%")
+  gg_bits_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'bits', rev_stack_order = T) +
+  ggtitle("bottom 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 11, 1), labels =  seq(-5, 5, 1)) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob bottom 10%")
+  gg_prob_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 11, 1), labels = seq(-5, 5, 1)) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  gg <- arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20)))
+  ggsave(file = paste("~/figures/", l, "_ggseqlogo_c_topbottom10pct.pdf",sep = ""), gg, width = 10)
+}
+
+rm(data_c)
+
+
+############
+# -5_CG_+5 #
+############
+data_cg <- copy(data[grepl("......CG.....", data$context)])
+
+# Extract -5_CG_+5 context
+data_cg[, context_cg := as.vector(sapply(data_cg$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+
+# Count distributions
+gg <- ggplot(data_cg[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("depth") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3) +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"))
+
+ggsave('~/figures/count_distribution_cg.pdf', width = 24, height = 24, units = 'cm')
+
+# % methylation distributions
+gg <- ggplot(data_cg[!is.na(pct_met) & (cnt_met+cnt_unmet) > 9], aes(x=pct_met)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("% methylation") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3, scales = "free_y") +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black")) +
+coord_cartesian(xlim = c(0, 100))
+
+ggsave('~/figures/pctmet_distribution_cg.pdf', width = 28, height = 24, units = 'cm')
+
+
+# Plot for each library
+for (l in unique(data_cg$library)){
+  print(l)
+  # Obtain filtered and order matrix
+  data_cg_filter <- data_cg[library == l & !is.na(pct_met) & (cnt_met+cnt_unmet) > 9][order(-pct_met)]
+  # Obtain top and bottom sequences
+  seqs_top <- data_cg_filter[1:round(nrow(data_cg_filter)/10)]$context_cg
+  seqs_bottom <- data_cg_filter[(nrow(data_cg_filter)-round(nrow(data_cg_filter)/10)):nrow(data_cg_filter)]$context_cg
+  # Plot logo
+  print("- bits top 10%")
+  gg_bits_top <- ggplot() +
+  geom_logo(seqs_top, method = 'bits', rev_stack_order = T) +
+  ggtitle("top 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob top 10%")
+  gg_prob_top <- ggplot() +
+  geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- bits bottom 10%")
+  gg_bits_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'bits', rev_stack_order = T) +
+  ggtitle("bottom 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob bottom 10%")
+  gg_prob_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  gg <- arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20)))
+  ggsave(file = paste("~/figures/", l, "_ggseqlogo_cg_topbottom10pct.pdf",sep = ""), gg, width = 10)
+}
+
+rm(data_cg)
+
+
+############
+# -5_CA_+5 #
+############
+data_ca <- copy(data[grepl("......CA.....", data$context)])
+
+# Extract -5_CA_+5 context
+data_ca[, context_ca := as.vector(sapply(data_ca$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+
+# Count distributions
+gg <- ggplot(data_ca[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("depth") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3) +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"))
+
+ggsave('~/figures/count_distribution_ca.pdf', width = 24, height = 24, units = 'cm')
+
+# % methylation distributions
+gg <- ggplot(data_ca[!is.na(pct_met) & (cnt_met+cnt_unmet) > 9], aes(x=pct_met)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("% methylation") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3, scales = "free_y") +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black")) +
+coord_cartesian(xlim = c(0, 100))
+
+ggsave('~/figures/pctmet_distribution_ca.pdf', width = 28, height = 24, units = 'cm')
+
+
+# Plot for each library
+for (l in unique(data_ca$library)){
+  print(l)
+  # Obtain filtered and order matrix
+  data_ca_filter <- data_ca[library == l & !is.na(pct_met) & (cnt_met+cnt_unmet) > 9][order(-pct_met)]
+  # Obtain top and bottom sequences
+  seqs_top <- data_ca_filter[1:round(nrow(data_ca_filter)/10)]$context_ca
+  seqs_bottom <- data_ca_filter[(nrow(data_ca_filter)-round(nrow(data_ca_filter)/10)):nrow(data_ca_filter)]$context_ca
+  # Plot logo
+  print("- bits top 10%")
+  gg_bits_top <- ggplot() +
+  geom_logo(seqs_top, method = 'bits', rev_stack_order = T) +
+  ggtitle("top 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob top 10%")
+  gg_prob_top <- ggplot() +
+  geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- bits bottom 10%")
+  gg_bits_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'bits', rev_stack_order = T) +
+  ggtitle("bottom 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob bottom 10%")
+  gg_prob_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  gg <- arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20)))
+  ggsave(file = paste("~/figures/", l, "_ggseqlogo_ca_topbottom10pct.pdf",sep = ""), gg, width = 10)
+}
+
+rm(data_ca)
+
+
+############
+# -5_CC_+5 #
+############
+data_cc <- copy(data[grepl("......CC.....", data$context)])
+
+# Extract -5_CC_+5 context
+data_cc[, context_cc := as.vector(sapply(data_cc$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+
+# Count distributions
+gg <- ggplot(data_cc[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("depth") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3) +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"))
+
+ggsave('~/figures/count_distribution_cc.pdf', width = 24, height = 24, units = 'cm')
+
+# % methylation distributions
+gg <- ggplot(data_cc[!is.na(pct_met) & (cnt_met+cnt_unmet) > 9], aes(x=pct_met)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("% methylation") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3, scales = "free_y") +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black")) +
+coord_cartesian(xlim = c(0, 100))
+
+ggsave('~/figures/pctmet_distribution_cc.pdf', width = 28, height = 24, units = 'cm')
+
+
+# Plot for each library
+for (l in unique(data_cc$library)){
+  print(l)
+  # Obtain filtered and order matrix
+  data_cc_filter <- data_cc[library == l & !is.na(pct_met) & (cnt_met+cnt_unmet) > 9][order(-pct_met)]
+  # Obtain top and bottom sequences
+  seqs_top <- data_cc_filter[1:round(nrow(data_cc_filter)/10)]$context_cc
+  seqs_bottom <- data_cc_filter[(nrow(data_cc_filter)-round(nrow(data_cc_filter)/10)):nrow(data_cc_filter)]$context_cc
+  # Plot logo
+  print("- bits top 10%")
+  gg_bits_top <- ggplot() +
+  geom_logo(seqs_top, method = 'bits', rev_stack_order = T) +
+  ggtitle("top 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob top 10%")
+  gg_prob_top <- ggplot() +
+  geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- bits bottom 10%")
+  gg_bits_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'bits', rev_stack_order = T) +
+  ggtitle("bottom 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob bottom 10%")
+  gg_prob_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  gg <- arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20)))
+  ggsave(file = paste("~/figures/", l, "_ggseqlogo_cc_topbottom10pct.pdf",sep = ""), gg, width = 10)
+}
+
+rm(data_cc)
+
+
+############
+# -5_CT_+5 #
+############
+data_ct <- copy(data[grepl("......CT.....", data$context)])
+
+# Extract -5_CT_+5 context
+data_ct[, context_ct := as.vector(sapply(data_ct$context, function(x) paste(unlist(strsplit(x, ""))[2:13], collapse = "")))]
+
+# Count distributions
+gg <- ggplot(data_ct[!is.na(pct_met)], aes(x=cnt_met+cnt_unmet)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("depth") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3) +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black"))
+
+ggsave('~/figures/count_distribution_ct.pdf', width = 24, height = 24, units = 'cm')
+
+# % methylation distributions
+gg <- ggplot(data_ct[!is.na(pct_met) & (cnt_met+cnt_unmet) > 9], aes(x=pct_met)) +
+geom_histogram(binwidth=1) +
+theme_bw() +
+xlab("% methylation") +
+ylab("frequency") +
+facet_wrap(~ factor(library, levels = c("DNMT3A-Abcam-30min", "DNMT3A-Abcam-120min", "DNMT3A-Abcam-240min", "DNMT3B-Abcam-30min", "DNMT3B-Abcam-120min", "DNMT3B-Abcam-240min", "MSssI-10min", "MSssI-30min", "MSssI-240min", "Ecoli-unmethylated-DNA")), ncol = 3, scales = "free_y") +
+theme(axis.title = element_text(size=16), axis.text = element_text(size=16, color = "black"), strip.text = element_text(size=16, color = "black")) +
+coord_cartesian(xlim = c(0, 100))
+
+ggsave('~/figures/pctmet_distribution_ct.pdf', width = 28, height = 24, units = 'cm')
+
+
+# Plot for each library
+for (l in unique(data_ct$library)){
+  print(l)
+  # Obtain filtered and order matrix
+  data_ct_filter <- data_ct[library == l & !is.na(pct_met) & (cnt_met+cnt_unmet) > 9][order(-pct_met)]
+  # Obtain top and bottom sequences
+  seqs_top <- data_ct_filter[1:round(nrow(data_ct_filter)/10)]$context_ct
+  seqs_bottom <- data_ct_filter[(nrow(data_ct_filter)-round(nrow(data_ct_filter)/10)):nrow(data_ct_filter)]$context_ct
+  # Plot logo
+  print("- bits top 10%")
+  gg_bits_top <- ggplot() +
+  geom_logo(seqs_top, method = 'bits', rev_stack_order = T) +
+  ggtitle("top 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob top 10%")
+  gg_prob_top <- ggplot() +
+  geom_logo(seqs_top, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- bits bottom 10%")
+  gg_bits_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'bits', rev_stack_order = T) +
+  ggtitle("bottom 10%") +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  print("- prob bottom 10%")
+  gg_prob_bottom <- ggplot() +
+  geom_logo(seqs_bottom, method = 'prob', rev_stack_order = T) +
+  theme_logo() +
+  scale_x_continuous(breaks = seq(1, 12, 1), labels = c(seq(-5, 0, 1), seq(0, 5, 1))) +
+  theme(axis.line.y = element_line(color="black"), axis.title = element_text(size=20), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(size=18, color = "black"), plot.title = element_text(size=20, hjust = 0.5))
+  gg <- arrangeGrob(gg_bits_top, gg_bits_bottom, gg_prob_top, gg_prob_bottom, ncol = 2, top = textGrob(l, gp=gpar(fontface="bold", fontsize=20)))
+  ggsave(file = paste("~/figures/", l, "_ggseqlogo_ct_topbottom10pct.pdf",sep = ""), gg, width = 10)
+}
+
+rm(data_ct)
 ```
