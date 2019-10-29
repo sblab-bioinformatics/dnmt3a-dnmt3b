@@ -32,6 +32,8 @@ To access the publicly available human and mouse bisulfite and RNA-seq datasets 
   - [Mouse TKO DNMT bisulfite sequencing](mouse_tko_dnmt_bs.md)
   - [Human DNMT KO bisulfite sequencing](human_dnmt_ko_bs.md)
   - [Human tissues bisulfite sequencing](human_tissues_bs.md)
+  - [Mouse tissues bisulfite sequencing](mouse_tissue_bs.md)
+  - [Mouse brain development bisulfite sequencing](mouse_brain_development_bs.md)
   - [Human and mouse development bisulfite RNA-seq](human_mouse_development_rna-seq.md)
 
 
