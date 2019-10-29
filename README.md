@@ -31,6 +31,8 @@ To access the publicly available human and mouse bisulfite and RNA-seq datasets 
   - [*E.coli* bisulfite sequencing](ecoli_bs.md)
   - [Mouse TKO DNMT bisulfite sequencing](mouse_tko_dnmt_bs.md)
   - [Human DNMT KO bisulfite sequencing](human_dnmt_ko_bs.md)
+  - [Human tissues bisulfite sequencing](human_tissues_bs.md)
+
 
 
 ### System requirements and installation
