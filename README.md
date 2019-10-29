@@ -37,6 +37,7 @@ To access the publicly available human and mouse bisulfite and RNA-seq datasets 
 
 Software, for installation details of the individual tools follow the links:
 
+- [SRA toolkit.v2.8.0](https://github.com/ncbi/sra-tools)
 - [EMBOSS v6.6.0.0](http://emboss.sourceforge.net/)
 - [fastaRegexFinder.py v0.1.1](https://github.com/dariober/bioinformatics-cafe/tree/master/fastaRegexFinder)
 - Standard Unix tools: cut, awk, sort, uniq, grep, tr, echo ...
