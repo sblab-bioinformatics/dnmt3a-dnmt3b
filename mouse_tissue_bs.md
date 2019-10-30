@@ -1,5 +1,5 @@
-[72 datasets available from ENCODE]
-(https://www.encodeproject.org/matrix/?type=Experiment&status=released&assay_slims=DNA+methylation&assay_title=WGBS&replicates.library.biosample.donor.organism.scientific_name=Mus+musculus&biosample_ontology.classification=tissue&files.file_type=bed+bedMethyl)
+[72 datasets available from ENCODE](https://www.encodeproject.org/matrix/?type=Experiment&status=released&assay_slims=DNA+methylation&assay_title=WGBS&replicates.library.biosample.donor.organism.scientific_name=Mus+musculus&biosample_ontology.classification=tissue&files.file_type=bed+bedMethyl)
+
 
 ## Download bedmethyl files
 
