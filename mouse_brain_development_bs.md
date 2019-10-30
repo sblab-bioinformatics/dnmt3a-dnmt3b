@@ -6,8 +6,8 @@ Global epigenomic reconfiguration during mammalian brain development. Science 20
 
 ```sh
 cd ~
-mkdir -p 20190722_mouse_brain_development/data
-cd ~/20190722_mouse_brain_development/data
+mkdir data
+cd ~/data
 
 curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173779/suppl/GSM1173779_allC.MethylC-Seq_mm_fc_fetal.chr19.txt.gz &
 
@@ -44,10 +44,10 @@ curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173793/suppl/GS
 ### prepare mm9 reference and methylation context
 
 ```sh
-srun --mem 96G --pty /usr/bin/bash
+srun --mem 16G --pty /usr/bin/bash
 
 ## Create mm9.chr19 reference
-cd ~/20190722_mouse_brain_development
+cd ~
 mkdir reference
 cd reference
 
@@ -74,9 +74,9 @@ wc -l mm9.chr19.context.bed
 ## extract context information around C (±6)
 
 ```sh
-cd ~/20190722_mouse_brain_development/data
+cd ~/data
 
-bed=~/20190722_mouse_brain_development/reference/mm9.chr19.context.bed
+bed=~/reference/mm9.chr19.context.bed
 
 for report in *.chr19.txt.gz
 do
@@ -162,9 +162,11 @@ wc -l *.context.txt
 #     5954244 GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr19.context.txt
 #     5976088 GSM1173795_allC.TAB-Seq_mm_fc_6wk.chr19.context.txt
 
+# Concatenate MethylC-Seq context files
+tableCat.py -i GSM*MethylC-Seq*.context.txt -r .context.txt | awk '{split($8,a,"."); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"substr(a[2],16)}' > mouse_brain_MethylC-Seq.chr19.context.txt &
+
 ```
 
-# look at NCAN context
 
 ### load MethylC-Seq data in R
 
@@ -177,7 +179,7 @@ library(ggplot2)
 options(width = 300)
 
 # Load MethylC-Seq data
-data <- fread("~/20190722_mouse_brain_development/data/mouse_brain_MethylC-Seq.chr19.context.txt")
+data <- fread("~/data/mouse_brain_MethylC-Seq.chr19.context.txt")
 setnames(data, c("chr", "start", "end", "cnt_met", "cnt_tot", "strand", "context", "library"))
 
 # Calculate percentage methylation
@@ -189,12 +191,125 @@ table(data$library)
 #    fc_male_7wk_neun_neg    fc_male_7wk_neun_pos               fc_tet2ko
 #                11556716                 8396847                12751741
 ```
+### extract NCAN methylation
 
+```sh
+data_xcay <- copy(data[grepl("...CA..", data$context)])
+
+# Extract XCAY context
+data_xcay[, context_xcay := as.vector(sapply(data_xcay$context, function(x) paste(unlist(strsplit(x, ""))[3:6], collapse = "")))]
+
+# remove context with N
+data_xcay <- data_xcay[!context_xcay %like% "N"]
+
+# Explore XCAY context
+## hs_mfg_35do
+data_xcay[library == "fc_female_6wk_neun_pos", .(.N, pct_met_median = median(pct_met, na.rm=TRUE), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context_xcay)][order(-pct_met_mean)]
+#     context_xcay      N pct_met_median pct_met_mean
+#  1:         ACAC  83627           7.69        14.04
+#  2:         GCAC  39201           0.00        11.80
+#  3:         CCAC  43212           0.00        10.39
+#  4:         TCAC  57923           0.00         9.46
+#  5:         ACAT 121200           0.00         5.28
+#  6:         ACAG 113703           0.00         5.04
+#  7:         CCAG  69927           0.00         4.18
+#  8:         GCAT  65551           0.00         3.56
+#  9:         CCAT  65718           0.00         3.30
+# 10:         GCAG  65265           0.00         3.28
+# 11:         ACAA 146929           0.00         2.99
+# 12:         CCAA  77883           0.00         2.94
+# 13:         TCAT  96305           0.00         2.75
+# 14:         TCAG  88321           0.00         2.67
+# 15:         GCAA  73170           0.00         2.44
+# 16:         TCAA 106481           0.00         1.66
+
+data_xcay[library == "fc_female_6wk_neun_neg", .(.N, pct_met_median = median(pct_met, na.rm=TRUE), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context_xcay)][order(-pct_met_mean)]
+#     context_xcay      N pct_met_median pct_met_mean
+#  1:         ACAC  82485              0         3.31
+#  2:         GCAC  38800              0         2.94
+#  3:         CCAC  44621              0         2.84
+#  4:         TCAC  56699              0         2.25
+#  5:         CCAG  71849              0         1.41
+#  6:         ACAT 115594              0         1.29
+#  7:         ACAG 110897              0         1.27
+#  8:         CCAT  64548              0         1.18
+#  9:         CCAA  77722              0         1.06
+# 10:         GCAG  64700              0         1.00
+# 11:         GCAT  62830              0         0.97
+# 12:         TCAT  91151              0         0.85
+# 13:         ACAA 143508              0         0.84
+# 14:         TCAG  87027              0         0.83
+# 15:         GCAA  71617              0         0.76
+# 16:         TCAA 102889              0         0.64
+
+data_xcay[library == "fc_glia_S100b_pos", .(.N, pct_met_median = median(pct_met, na.rm=TRUE), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context_xcay)][order(-pct_met_mean)]
+#     context_xcay      N pct_met_median pct_met_mean
+#  1:         ACAC 202200              0         4.13
+#  2:         CCAC 191513              0         3.36
+#  3:         GCAC 194909              0         3.04
+#  4:         TCAC 197143              0         2.72
+#  5:         CCAG 389346              0         1.45
+#  6:         ACAT 238559              0         1.44
+#  7:         ACAG 401350              0         1.39
+#  8:         CCAT 228700              0         1.31
+#  9:         CCAA 213828              0         1.22
+# 10:         GCAT 241180              0         1.00
+# 11:         ACAA 244744              0         0.97
+# 12:         GCAG 384087              0         0.96
+# 13:         TCAT 239173              0         0.93
+# 14:         TCAG 383810              0         0.89
+# 15:         GCAA 238627              0         0.76
+# 16:         TCAA 230140              0         0.70
+
+data_xcay[library == "fc_10wk", .(.N, pct_met_median = median(pct_met, na.rm=TRUE), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context_xcay)][order(-pct_met_mean)]
+#     context_xcay      N pct_met_median pct_met_mean
+#  1:         ACAC 123250              0         8.47
+#  2:         GCAC 111177              0         6.66
+#  3:         CCAC  97357              0         6.36
+#  4:         TCAC 113510              0         5.69
+#  5:         ACAT 159171              0         2.99
+#  6:         ACAG 252741              0         2.93
+#  7:         CCAG 219311              0         2.68
+#  8:         CCAT 135679              0         2.16
+#  9:         CCAA 136279              0         2.08
+# 10:         GCAT 152239              0         2.06
+# 11:         ACAA 168767              0         1.93
+# 12:         GCAG 221975              0         1.90
+# 13:         TCAT 153769              0         1.71
+# 14:         TCAG 233682              0         1.68
+# 15:         GCAA 153658              0         1.50
+# 16:         TCAA 154335              0         1.17
+
+data_xcay[library == "fc_tet2ko", .(.N, pct_met_median = median(pct_met, na.rm=TRUE), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context_xcay)][order(-pct_met_mean)]
+#     context_xcay      N pct_met_median pct_met_mean
+#  1:         ACAC 259235              0         8.72
+#  2:         GCAC 189461              0         6.77
+#  3:         CCAC 204200              0         6.30
+#  4:         TCAC 228004              0         5.84
+#  5:         ACAT 329817              0         3.15
+#  6:         ACAG 418428              0         2.92
+#  7:         CCAG 351499              0         2.48
+#  8:         GCAT 260217              0         2.06
+#  9:         CCAT 266753              0         2.02
+# 10:         ACAA 326498              0         1.92
+# 11:         GCAG 335665              0         1.85
+# 12:         CCAA 245618              0         1.84
+# 13:         TCAT 308822              0         1.67
+# 14:         TCAG 379586              0         1.56
+# 15:         GCAA 250634              0         1.39
+# 16:         TCAA 287240              0         1.04
+
+# save data_xcay table
+fwrite(data_xcay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(library, context_xcay)], file = "~/data/mouse_brain_chr19_NCAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+
+rm(data_xcay)
+```
 
 # extract CAN methylation
 
 ```r
-data_ncan <- fread("~/20190722_mouse_brain_development/data/20190723_mouse_brain_chr19_NCAN.txt")
+data_ncan <- fread("~/data/mouse_brain_chr19_NCAN.txt")
+
 
 # Extract cay context
 data_ncan[, context_cay := as.vector(sapply(data_ncan$context_xcay, function(x) paste(unlist(strsplit(x, ""))[2:4], collapse = "")))]
@@ -235,82 +350,12 @@ coord_cartesian(ylim = c(0, 15))
 ggsave("~/figures/CAN_age.pdf", width = 25, height = 20, units = "cm")
 ```
 
-### neun_pos & neun_neg & tet2ko  
-
-```r
-data_ncan <- fread("~/20190722_mouse_brain_development/data/20190723_mouse_brain_chr19_NCAN.txt")
-
-# Extract cay context
-data_ncan[, context_cay := as.vector(sapply(data_ncan$context_xcay, function(x) paste(unlist(strsplit(x, ""))[2:4], collapse = "")))]
-
-data_cay <- data_ncan[, .(.N, pct_met_median = median(pct_met_median, na.rm=TRUE), pct_met_mean = round(mean(pct_met_mean, na.rm=TRUE), 2)), by = .(library, context_cay)]
-
-# extract cell-type-specific rows
-can_celltype <- data_cay[grepl("neun_pos|neun_neg|fc_tet2ko|fc_glia_S100b_pos", data_cay$library), ]
-
-table(can_celltype$library)
-
-can_celltype$library <- factor(can_celltype$library, levels = c("fc_male_7wk_neun_pos", "fc_male_7wk_neun_neg",  "fc_female_6wk_neun_pos", "fc_female_6wk_neun_neg", "fc_female_12mo_neun_pos", "fc_female_12mo_neun_neg", "fc_glia_S100b_pos", "fc_tet2ko"))
-
-can_celltype$context_cay <- factor(can_celltype$context_cay, levels = data_cay[, .(.N, pct_met_mean = round(mean(pct_met_mean, na.rm=TRUE), 2)), by = .(context_cay)][order(-pct_met_mean)]$context_cay)
-## levels: "CAC" "CAG" "CAT" "CAA"
-
-# plot point and line
-gg <- ggplot(can_celltype, aes(x = library, y = pct_met_mean, color = context_cay, group = context_cay)) +
-geom_point(size = 1.5) +
-geom_line() +
-theme_bw() +
-ylab(expression("mCAN/CAN")) + 
-xlab("") +
-theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
-coord_cartesian(ylim = c(0, 15))
-ggsave("~/figures/CAN_age_celltype_line.pdf", width = 25, height = 20, units = "cm")
-
-
-# plot bar
-gg <- ggplot(can_celltype, aes(x = library, y = pct_met_mean, color = context_cay, group = context_cay)) +
-geom_bar(aes(fill = context_cay), stat="identity", position=position_dodge()) +
-theme_bw() +
-ylab(expression("mCAN/CAN")) + 
-xlab("") +
-theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
-coord_cartesian(ylim = c(0, 15))
-ggsave("~/figures/CAN_age_celltype_bar.pdf", width = 25, height = 20, units = "cm")
-
-# plot stacked bar
-gg <- ggplot(can_celltype, aes(x = library, y = pct_met_mean, colour = context_cay, group = context_cay)) +
-geom_bar(aes(fill = context_cay), stat="identity") +
-geom_text(aes(label = paste0(pct_met_mean,"%")), size=4, colour = "black", position = position_stack(vjust=0.5)) +
-theme_bw() +
-ylab(expression("mCAN/CAN")) + 
-xlab("") +
-theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
-coord_cartesian(ylim = c(0, 25))
-ggsave("~/figures/CAN_age_celltype_stackbar.pdf", width = 25, height = 20, units = "cm")
-
-######################### plot Percent stacked bar ######################### 
-# amounts of CAA,CAC,CAG,CAT on both strands of mm10.chr19 are in similar range
-# See: /Users/mao01/Google Drive/PROGRAM/20190724_Trinucleotide_Frenquency
-# Following plot is in approximation assuming that: CAA ~ CAC ~ CAG ~ CAT
-
-# plot Percent stacked bar
-gg <- ggplot(can_celltype, aes(x = library, y = pct_met_mean, colour = context_cay, group = context_cay)) +
-geom_bar(aes(fill = context_cay), stat="identity", position = "fill") +
-geom_text(aes(label = paste0(pct_met_mean,"%")), size=4, colour = "black", position = position_fill(vjust=0.5)) +
-theme_bw() +
-ylab(expression("[mCAN/CAN]/sum([mCAN/CAN])")) + 
-xlab("") +
-theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
-coord_cartesian(ylim = c(0, 1))
-ggsave("~/figures/CAN_age_celltype_stackbar_percent.pdf", width = 25, height = 20, units = "cm")
-```
-
 
 ### plot CAC/CAG
 
 
 ```r
-data_ncan <- fread("~/20190722_mouse_brain_development/data/20190723_mouse_brain_chr19_NCAN.txt")
+data_ncan <- fread("~/data/mouse_brain_chr19_NCAN.txt")
 
 # Extract cay context
 data_ncan[, context_cay := as.vector(sapply(data_ncan$context_xcay, function(x) paste(unlist(strsplit(x, ""))[2:4], collapse = "")))]
