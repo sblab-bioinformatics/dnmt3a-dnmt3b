@@ -829,7 +829,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
 coord_cartesian(ylim = c(0, 2))
-ggsave("~/20190722_mouse_tissue_chr19_CAC_CAG_CAY_CAR_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr19_CAC_CAG_CAY_CAR_age.pdf", width = 25, height = 20, units = "cm")
 
 rm(cac_cag_age_melt_rep)
 rm(cac_cag_age_melt)
@@ -838,21 +838,6 @@ rm(can_age_rep)
 rm(data_cay)
 rm(data)
 
-```
-
-
-
-## save and delete files
-
-```sh
-cd ~/data
-
-# remove bedmethyl & bed files
-rm *bed*
-rm *ENCFF*.context.txt
-
-# compress context files
-pigz *.context.txt &
 ```
 
 
@@ -956,5 +941,5 @@ dcast(fb, age ~ context_cgy + rep, value.car = "pct_met_mean")
 # 6: E16.5    79    79    80    80    78    78    78    77
 # 7:    P0    78    78    80    80    77    78    77    77
 
-fwrite(data_cgy[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cgy, age, rep)][order(-pct_met_mean)], file = "~/20190809_mouse_tissue_chr19_CGN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_cgy[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cgy, age, rep)][order(-pct_met_mean)], file = "~/mouse_tissue_chr19_CGN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 ```
