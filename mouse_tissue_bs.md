@@ -452,7 +452,7 @@ mv ENCFF803ATF.bed.gz Stomach_E16.5_ENCFF803ATF_2_CpG.bed.gz
 
 ```
 
-## extract chr19 info
+## extract chr1 info
 
 ```sh
 cd ~/data
@@ -461,34 +461,34 @@ for bed in *.bed.gz
 do
     bname=${bed%.bed.gz}
     echo $bed $bname
-    zcat $bed | awk -vOFS="\t" '{if ($1 == "chr19" && $10 > 9) print $1, $2, $3, $11, $10, $6 }' > $bname.chr19.bed &
+    zcat $bed | awk -vOFS="\t" '{if ($1 == "chr1" && $10 > 9) print $1, $2, $3, $11, $10, $6 }' > $bname.chr1.bed &
 done
 
 wc -l *.bed
-#    16776602 EmbryonicFacialProminence_E10.5_ENCFF006QDP_1_CHH.chr19.bed
-#    15432189 EmbryonicFacialProminence_E10.5_ENCFF050FNM_2_CHH.chr19.bed
-#      911351 EmbryonicFacialProminence_E10.5_ENCFF095VLL_2_CpG.chr19.bed
-#     4637824 EmbryonicFacialProminence_E10.5_ENCFF198NON_2_CHG.chr19.bed
-#     4990059 EmbryonicFacialProminence_E10.5_ENCFF722PJA_1_CHG.chr19.bed
-#     1004429 EmbryonicFacialProminence_E10.5_ENCFF886MNA_1_CpG.chr19.bed
-#      940055 EmbryonicFacialProminence_E11.5_ENCFF083XWZ_2_CpG.chr19.bed
-#      964416 EmbryonicFacialProminence_E11.5_ENCFF306DKT_1_CpG.chr19.bed
-#     4834729 EmbryonicFacialProminence_E11.5_ENCFF590MRS_1_CHG.chr19.bed
-#    16076330 EmbryonicFacialProminence_E11.5_ENCFF754BON_2_CHH.chr19.bed
-#    16376632 EmbryonicFacialProminence_E11.5_ENCFF884JVJ_1_CHH.chr19.bed
-#     4745384 EmbryonicFacialProminence_E11.5_ENCFF997OLQ_2_CHG.chr19.bed
-#    12017242 EmbryonicFacialProminence_E14.5_ENCFF063YAO_1_CHH.chr19.bed
-#      815174 EmbryonicFacialProminence_E14.5_ENCFF686ZQQ_2_CpG.chr19.bed
-#    14350517 EmbryonicFacialProminence_E14.5_ENCFF709AXF_2_CHH.chr19.bed
-#     3528743 EmbryonicFacialProminence_E14.5_ENCFF744VPT_1_CHG.chr19.bed
-#     4241469 EmbryonicFacialProminence_E14.5_ENCFF757MSK_2_CHG.chr19.bed
-#      670539 EmbryonicFacialProminence_E14.5_ENCFF989UNH_1_CpG.chr19.bed
-#      919351 Forebrain_E10.5_ENCFF365XZL_2_CpG.chr19.bed
-#     4628308 Forebrain_E10.5_ENCFF369TZO_1_CHG.chr19.bed
-#    15512425 Forebrain_E10.5_ENCFF400MQF_2_CHH.chr19.bed
-#     4662702 Forebrain_E10.5_ENCFF506SUF_2_CHG.chr19.bed
-#    15390436 Forebrain_E10.5_ENCFF590OFM_1_CHH.chr19.bed
-#      909495 Forebrain_E10.5_ENCFF977BKF_1_CpG.chr19.bed
+#    16776602 EmbryonicFacialProminence_E10.5_ENCFF006QDP_1_CHH.chr1.bed
+#    15432189 EmbryonicFacialProminence_E10.5_ENCFF050FNM_2_CHH.chr1.bed
+#      911351 EmbryonicFacialProminence_E10.5_ENCFF095VLL_2_CpG.chr1.bed
+#     4637824 EmbryonicFacialProminence_E10.5_ENCFF198NON_2_CHG.chr1.bed
+#     4990059 EmbryonicFacialProminence_E10.5_ENCFF722PJA_1_CHG.chr1.bed
+#     1004429 EmbryonicFacialProminence_E10.5_ENCFF886MNA_1_CpG.chr1.bed
+#      940055 EmbryonicFacialProminence_E11.5_ENCFF083XWZ_2_CpG.chr1.bed
+#      964416 EmbryonicFacialProminence_E11.5_ENCFF306DKT_1_CpG.chr1.bed
+#     4834729 EmbryonicFacialProminence_E11.5_ENCFF590MRS_1_CHG.chr1.bed
+#    16076330 EmbryonicFacialProminence_E11.5_ENCFF754BON_2_CHH.chr1.bed
+#    16376632 EmbryonicFacialProminence_E11.5_ENCFF884JVJ_1_CHH.chr1.bed
+#     4745384 EmbryonicFacialProminence_E11.5_ENCFF997OLQ_2_CHG.chr1.bed
+#    12017242 EmbryonicFacialProminence_E14.5_ENCFF063YAO_1_CHH.chr1.bed
+#      815174 EmbryonicFacialProminence_E14.5_ENCFF686ZQQ_2_CpG.chr1.bed
+#    14350517 EmbryonicFacialProminence_E14.5_ENCFF709AXF_2_CHH.chr1.bed
+#     3528743 EmbryonicFacialProminence_E14.5_ENCFF744VPT_1_CHG.chr1.bed
+#     4241469 EmbryonicFacialProminence_E14.5_ENCFF757MSK_2_CHG.chr1.bed
+#      670539 EmbryonicFacialProminence_E14.5_ENCFF989UNH_1_CpG.chr1.bed
+#      919351 Forebrain_E10.5_ENCFF365XZL_2_CpG.chr1.bed
+#     4628308 Forebrain_E10.5_ENCFF369TZO_1_CHG.chr1.bed
+#    15512425 Forebrain_E10.5_ENCFF400MQF_2_CHH.chr1.bed
+#     4662702 Forebrain_E10.5_ENCFF506SUF_2_CHG.chr1.bed
+#    15390436 Forebrain_E10.5_ENCFF590OFM_1_CHH.chr1.bed
+#      909495 Forebrain_E10.5_ENCFF977BKF_1_CpG.chr1.bed
 
 ```
 
@@ -525,40 +525,40 @@ done
 
 
 # concatenate all CpG context files
-tableCat.py -i *ENCFF*CpG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CpG.chr19.context.txt &
+tableCat.py -i *ENCFF*CpG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CpG.chr1.context.txt &
 # takes 6.5G of space
 
 # concatenate all CHG context files
-tableCat.py -i *ENCFF*CHG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CHG.chr19.context.txt &
+tableCat.py -i *ENCFF*CHG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CHG.chr1.context.txt &
 # take 33G of space
 
 # concatenate all CHH context files
-tableCat.py -i *ENCFF*CHH*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CHH.chr19.context.txt &
+tableCat.py -i *ENCFF*CHH*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CHH.chr1.context.txt &
 # take 110G of space
 
 # remove unneeded columns to save space and memory for later analysis
 # concatenate all context files, final size 70G
-tableCat.py -i mouse_tissue.CH*.chr19.context.txt -r .context.txt | awk '{print $7"\t"$4"\t"$8"\t"$9"\t"$10}' > mouse_tissue.nonCpG.chr19.context.txt &
+tableCat.py -i mouse_tissue.CH*.chr1.context.txt -r .context.txt | awk '{print $7"\t"$4"\t"$8"\t"$9"\t"$10}' > mouse_tissue.nonCpG.chr1.context.txt &
 
 # only keep methylated cytosine for later analysis
 # concatenate all context files, final size 8.3G
-cat mouse_tissue.{CpG,CHG,CHH}.chr19.context.txt | awk '{if ($4 > 0) print $7"\t"$4"\t"$8"\t"$9"\t"$10}' > mouse_tissue.methylated.chr19.context.txt &
+cat mouse_tissue.{CpG,CHG,CHH}.chr1.context.txt | awk '{if ($4 > 0) print $7"\t"$4"\t"$8"\t"$9"\t"$10}' > mouse_tissue.methylated.chr1.context.txt &
 
 # extract NCAN context, 24G
-awk -v OFS="\t" '{if ($1 ~ "...CA..") print substr($1,3,4)"\t"$2"\t"$3"\t"$4"\t"$5}' mouse_tissue.nonCpG.chr19.context.txt > mouse_tissue.ncan.chr19.context.txt &
+awk -v OFS="\t" '{if ($1 ~ "...CA..") print substr($1,3,4)"\t"$2"\t"$3"\t"$4"\t"$5}' mouse_tissue.nonCpG.chr1.context.txt > mouse_tissue.ncan.chr1.context.txt &
 
 # extract CAN context, 23G
-awk -v OFS="\t" '{if ($1 ~ ".CA.") print substr($1,2,3)"\t"$2"\t"$3"\t"$4"\t"$5}' mouse_tissue.ncan.chr19.context.txt > mouse_tissue.can.chr19.context.txt &
+awk -v OFS="\t" '{if ($1 ~ ".CA.") print substr($1,2,3)"\t"$2"\t"$3"\t"$4"\t"$5}' mouse_tissue.ncan.chr1.context.txt > mouse_tissue.can.chr1.context.txt &
 
 
 wc -l mouse_tissue.*
-#    628983453 mouse_tissue.CHG.chr19.context.txt
-#   2111756248 mouse_tissue.CHH.chr19.context.txt
-#    121951594 mouse_tissue.CpG.chr19.context.txt
-#    319594031 mouse_tissue.methylated.chr19.context.txt
+#    628983453 mouse_tissue.CHG.chr1.context.txt
+#   2111756248 mouse_tissue.CHH.chr1.context.txt
+#    121951594 mouse_tissue.CpG.chr1.context.txt
+#    319594031 mouse_tissue.methylated.chr1.context.txt
 ##   11.2% are methylated
-#   2740739701 mouse_tissue.nonCpG.chr19.context.txt
-#   1046548152 mouse_tissue.ncan.chr19.context.txt
+#   2740739701 mouse_tissue.nonCpG.chr1.context.txt
+#   1046548152 mouse_tissue.ncan.chr1.context.txt
 
 ```
 
@@ -573,11 +573,11 @@ library(ggplot2)
 options(width = 300)
 
 # Load mfg data
-# data <- fread("~/data/mouse_tissue.nonCpG.chr19.context.txt")
+# data <- fread("~/data/mouse_tissue.nonCpG.chr1.context.txt")
 # # nrow larger than current 2^31 limit
 # # See ?"Memory-limits" for more details.
 
-data <- fread("~/data/mouse_tissue.ncan.chr19.context.txt")
+data <- fread("~/data/mouse_tissue.ncan.chr1.context.txt")
 
 setnames(data, c("context", "pct_met", "mouse_tissue", "age", "rep"))
 
@@ -653,7 +653,7 @@ data_cay[mouse_tissue == "Forebrain", .(.N, pct_met_mean = round(mean(pct_met, n
 # 28:         CAA E16.5 3652393         0.36
 
 # save data_cay table
-fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cay, age, rep)][order(-pct_met_mean)], file = "~/mouse_tissue_chr19_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cay, age, rep)][order(-pct_met_mean)], file = "~/mouse_tissue_chr1_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 ```
 
 ### plot CAC/CAG, CAY_CAR
@@ -686,7 +686,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black")) +
 coord_cartesian(ylim = c(0, 1.75))
-ggsave("~/mouse_tissue_chr19_CAC_CAG.pdf")
+ggsave("~/mouse_tissue_chr1_CAC_CAG.pdf")
 
 ## plot CAY_CAR
 cac_cag$mouse_tissue <- factor(cac_cag$mouse_tissue, level = cac_cag$mouse_tissue[order(cac_cag$CAC_CAG)])
@@ -698,7 +698,7 @@ ylab(expression("[mCAC/CAC+mCAT/CAT]/[mCAG/CAG+mCAA/CAA]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black")) +
 coord_cartesian(ylim = c(0, 1.75))
-ggsave("~/mouse_tissue_chr19_CAY_CAR.pdf")
+ggsave("~/mouse_tissue_chr1_CAY_CAR.pdf")
 
 
 ## plot CAC_CAG, CAY_CAR side by side
@@ -713,7 +713,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black")) +
 coord_cartesian(ylim = c(0, 1.75))
-ggsave("~/mouse_tissue_chr19_CAC_CAG_CAR_CAR.pdf")
+ggsave("~/mouse_tissue_chr1_CAC_CAG_CAR_CAR.pdf")
 
 rm(cac_cag_melt)
 rm(cac_cag)
@@ -725,14 +725,14 @@ rm(cac_cag)
 can_age <- data_cay[, .(pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cay, age, rep)]
 
 # save can_age table
-fwrite(can_age, file = "~/mouse_tissue_chr19_CAN_age.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(can_age, file = "~/mouse_tissue_chr1_CAN_age.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 
 ## load data
 # R
 # library(data.table)
 # library(ggplot2)
 # options(width = 300)
-# can_age <- fread("~/mouse_tissue_chr19_CAN_age.txt")
+# can_age <- fread("~/mouse_tissue_chr1_CAN_age.txt")
 
 # caculate mean,sd in replicates
 library(plyr)
@@ -761,7 +761,7 @@ ylab(expression("CA methylation (%)")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
 coord_cartesian(ylim = c(0, 1.5))
-ggsave("~/mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr1_CAN_age.pdf", width = 25, height = 20, units = "cm")
 
 # plot brain (add colour)
 gg <- ggplot( can_age_rep[mouse_tissue %in% c("Forebrain", "Midbrain", "Hindbrain")], aes(x = age, y = rep_mean, color = context_cay, group = context_cay)) +
@@ -777,7 +777,7 @@ ylab(expression("CA methylation (%)")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12), legend.position="top") +
 coord_cartesian(ylim = c(0, 1.5))
-ggsave("~/mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr1_CAN_age.pdf", width = 25, height = 20, units = "cm")
 
 # plot others (add colour)
 gg <- ggplot( can_age_rep[mouse_tissue %in% c("NeuralTube", "Heart","Liver", "EmbryonicFacialProminence", "Limb", "Kidney",  "Intestine", "Stomach", "Lung")], aes(x = age, y = rep_mean, color = context_cay, group = context_cay)) +
@@ -793,7 +793,7 @@ ylab(expression("mCAN/CAN")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12), legend.position="top") +
 coord_cartesian(ylim = c(0, 1.5))
-ggsave("~/mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr1_CAN_age.pdf", width = 25, height = 20, units = "cm")
 
 
 ########### plot CAC/CAG, CAY_CAR ratios through age ###########
@@ -829,7 +829,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
 coord_cartesian(ylim = c(0, 2))
-ggsave("~/mouse_tissue_chr19_CAC_CAG_CAY_CAR_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr1_CAC_CAG_CAY_CAR_age.pdf", width = 25, height = 20, units = "cm")
 
 rm(cac_cag_age_melt_rep)
 rm(cac_cag_age_melt)
@@ -846,7 +846,7 @@ rm(data)
 
 ```r
 cd ~/data
-unpigz mouse_tissue.CpG.chr19.context.txt
+unpigz mouse_tissue.CpG.chr1.context.txt
 
 R
 library(data.table)
@@ -855,7 +855,7 @@ library(ggplot2)
 # Set width
 options(width = 300)
 
-data <- fread("~/data/mouse_tissue.CpG.chr19.context.txt")
+data <- fread("~/data/mouse_tissue.CpG.chr1.context.txt")
 
 setnames(data, c("chr", "start", "end", "pct_met", "cnt_tot", "strand", "context", "mouse_tissue", "age", "rep"))
 
@@ -941,5 +941,5 @@ dcast(fb, age ~ context_cgy + rep, value.car = "pct_met_mean")
 # 6: E16.5    79    79    80    80    78    78    78    77
 # 7:    P0    78    78    80    80    77    78    77    77
 
-fwrite(data_cgy[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cgy, age, rep)][order(-pct_met_mean)], file = "~/mouse_tissue_chr19_CGN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_cgy[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cgy, age, rep)][order(-pct_met_mean)], file = "~/mouse_tissue_chr1_CGN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 ```

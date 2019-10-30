@@ -6,7 +6,7 @@
 
 - [Download bedmethyl files](human_tissues_bs.md#download-bedmethyl-files)
 - [Renaming](human_tissues_bs.md#renaming)
-- [Extract chr20 info](human_tissues_bs.md#extract-chr20-info)
+- [Extract chr1 info](human_tissues_bs.md#extract-chr1-info)
 - [Extract context information around C](human_tissues_bs.md#extract-context-information-around-C)
 - [Plotting](human_tissues_bs.md#plotting)
 
@@ -219,7 +219,7 @@ mv ENCFF936JAC.bed.gz UpperLobeOfLeftLung_ENCFF936JAC_CHH.bed.gz
 ```
 
 
-### Extract chr20 info
+### Extract chr1 info
 
 ```sh
 cd ~/data
@@ -230,7 +230,7 @@ do
     bname=${bed%.bed.gz}
     echo "$bname"
     zcat "$bed" |
-    awk -vOFS="\t" '{if ($1 == "chr20" && $10 > 9) print $1, $2, $3, $11, $10, $6}' > $bname.chr20.bed &
+    awk -vOFS="\t" '{if ($1 == "chr1" && $10 > 9) print $1, $2, $3, $11, $10, $6}' > $bname.chr1.bed &
 done
 ```
 
@@ -255,19 +255,19 @@ done
 
 
 # concatenate all CpG context files
-tableCat.py -i *ENCFF*CpG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]}' > human_tissue.CpG.chr20.context.txt &
+tableCat.py -i *ENCFF*CpG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]}' > human_tissue.CpG.chr1.context.txt &
 
 # concatenate all CHG context files
-tableCat.py -i *ENCFF*CHG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]}' > human_tissue.CHG.chr20.context.txt &
+tableCat.py -i *ENCFF*CHG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]}' > human_tissue.CHG.chr1.context.txt &
 
 # concatenate all CHH context files
-tableCat.py -i *ENCFF*CHH*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]}' > human_tissue.CHH.chr20.context.txt &
+tableCat.py -i *ENCFF*CHH*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]}' > human_tissue.CHH.chr1.context.txt &
 
 # remove unneeded columns to save space and memory for later analysis
-tableCat.py -i human_tissue.CH*.chr20.context.txt -r .context.txt | awk '{print $7"\t"$4"\t"$8}' > human_tissue.nonCpG.chr20.context.txt &
+tableCat.py -i human_tissue.CH*.chr1.context.txt -r .context.txt | awk '{print $7"\t"$4"\t"$8}' > human_tissue.nonCpG.chr1.context.txt &
 
 # only keep methylated cytosine for later analysis
-cat human_tissue.{CpG,CHG,CHH}.chr20.context.txt | awk '{if ($4 > 0) print $7"\t"$4"\t"$8}' > human_tissue.methylated.chr20.context.txt &
+cat human_tissue.{CpG,CHG,CHH}.chr1.context.txt | awk '{if ($4 > 0) print $7"\t"$4"\t"$8}' > human_tissue.methylated.chr1.context.txt &
 ```
 
 
@@ -281,7 +281,7 @@ library(ggplot2)
 options(width = 300)
 
 # Load mfg data
-data <- fread("~/data/human_tissue.nonCpG.chr20.context.txt")
+data <- fread("~/data/human_tissue.nonCpG.chr1.context.txt")
 setnames(data, c("context", "pct_met", "human_tissue"))
 
 
@@ -322,7 +322,7 @@ data_cay[human_tissue == "Testis", .(.N, pct_met_median = as.double(median(pct_m
 # 4:         CAA 3414801              0         0.72
 
 # save data_cay table
-fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(human_tissue, context_cay)][order(-pct_met_mean)], file = "/scratcha/sblab/mao01/20190718_human_tissue_wgbs/20190719_human_tissue_chr20_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(human_tissue, context_cay)][order(-pct_met_mean)], file = "/scratcha/sblab/mao01/20190718_human_tissue_wgbs/20190719_human_tissue_chr1_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 
 
 ############ CAC/CAG ##############
@@ -370,7 +370,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black")) +
 coord_cartesian(ylim = c(0, 3))
-ggsave("~/data/human_tissue_chr20_CAC_CAG.pdf")
+ggsave("~/data/human_tissue_chr1_CAC_CAG.pdf")
 
 rm(cac_cag)
 rm(data_cay)
