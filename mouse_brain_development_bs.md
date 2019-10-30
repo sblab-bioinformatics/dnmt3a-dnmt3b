@@ -68,7 +68,6 @@ awk -v OFS="\t" '{print $1, $2+6, $3-6, $4, $5, $6, toupper($7)}' > mm9.chr19.co
 
 wc -l mm9.chr19.context.bed
 # 24845749 mm9.chr19.context.bed (C±6)
-# 24845751 mm9.chr19.context.bed (C±3, overwritten)
 ```
 
 ## extract context information around C (±6)
