@@ -322,7 +322,7 @@ data_cay[human_tissue == "Testis", .(.N, pct_met_median = as.double(median(pct_m
 # 4:         CAA 3414801              0         0.72
 
 # save data_cay table
-fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(human_tissue, context_cay)][order(-pct_met_mean)], file = "/scratcha/sblab/mao01/20190718_human_tissue_wgbs/20190719_human_tissue_chr1_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(human_tissue, context_cay)][order(-pct_met_mean)], file = "~/human_tissue_chr1_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 
 
 ############ CAC/CAG ##############
