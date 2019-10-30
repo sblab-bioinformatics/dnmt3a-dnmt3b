@@ -65,9 +65,6 @@ bedtools slop -i - -g $ref.fai -b 6 | \
 bedtools getfasta -fi $ref -bed - -bedOut -s | \
 awk 'length($7) == 13' | \
 awk -v OFS="\t" '{print $1, $2+6, $3-6, $4, $5, $6, toupper($7)}' > mm9.chr1.context.bed &
-
-wc -l mm9.chr1.context.bed
-# 24845749 mm9.chr1.context.bed (C±6)
 ```
 
 ## extract context information around C (±6)
@@ -86,25 +83,6 @@ do
   bedtools intersect -a - -b "$bed" -loj -s -sorted | \
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.context.txt &
 done
-
-wc -l *.context.txt 
-#    5251961 GSM1173779_allC.MethylC-Seq_mm_fc_fetal.context.txt
-#    5241652 GSM1173780_allC.MethylC-Seq_mm_fc_1wk.context.txt
-#    9740227 GSM1173781_allC.MethylC-Seq_mm_fc_2wk.context.txt
-#   10579190 GSM1173782_allC.MethylC-Seq_mm_fc_4wk.context.txt
-#    9977493 GSM1173783_allC.MethylC-Seq_mm_fc_6wk.context.txt
-#    7002418 GSM1173784_allC.MethylC-Seq_mm_fc_10wk.context.txt
-#   11869853 GSM1173785_allC.MethylC-Seq_mm_fc_22mo.context.txt
-#    8396847 GSM1173786_allC.MethylC-Seq_mm_fc_male_7wk_neun_pos.context.txt
-#   11556716 GSM1173787_allC.MethylC-Seq_mm_fc_male_7wk_neun_neg.context.txt
-#    3115075 GSM1173788_allC.MethylC-Seq_mm_fc_female_6wk_neun_pos.context.txt
-#     217580 GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.context.txt
-#    5006539 GSM1173790_allC.MethylC-Seq_mm_fc_female_12mo_neun_pos.context.txt
-#    2785635 GSM1173791_allC.MethylC-Seq_mm_fc_female_12mo_neun_neg.context.txt
-#   12282691 GSM1173792_allC.MethylC-Seq_mm_fc_glia_S100b_pos.context.txt
-#   12751741 GSM1173793_allC.MethylC-Seq_mm_fc_tet2ko.context.txt
-#     547297 GSM1173794_allC.TAB-Seq_mm_fc_fetal.context.txt
-#    5976088 GSM1173795_allC.TAB-Seq_mm_fc_6wk.context.txt
 
 ## Error occured processing GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr1.txt.gz
 ## Error: Sorted input specified, but the file - has the following out of order record
@@ -141,25 +119,6 @@ do
   bedtools intersect -a - -b "$bed" -loj -s -sorted | \
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.context.txt &
 done
-
-wc -l *.context.txt 
-#     5251961 GSM1173779_allC.MethylC-Seq_mm_fc_fetal.chr1.context.txt
-#     5241652 GSM1173780_allC.MethylC-Seq_mm_fc_1wk.chr1.context.txt
-#     9740227 GSM1173781_allC.MethylC-Seq_mm_fc_2wk.chr1.context.txt
-#    10579190 GSM1173782_allC.MethylC-Seq_mm_fc_4wk.chr1.context.txt
-#     9977493 GSM1173783_allC.MethylC-Seq_mm_fc_6wk.chr1.context.txt
-#     7002418 GSM1173784_allC.MethylC-Seq_mm_fc_10wk.chr1.context.txt
-#    11869853 GSM1173785_allC.MethylC-Seq_mm_fc_22mo.chr1.context.txt
-#     8396847 GSM1173786_allC.MethylC-Seq_mm_fc_male_7wk_neun_pos.chr1.context.txt
-#    11556716 GSM1173787_allC.MethylC-Seq_mm_fc_male_7wk_neun_neg.chr1.context.txt
-#     3115075 GSM1173788_allC.MethylC-Seq_mm_fc_female_6wk_neun_pos.chr1.context.txt
-#     3078045 GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.chr1.context.txt
-#     5006539 GSM1173790_allC.MethylC-Seq_mm_fc_female_12mo_neun_pos.chr1.context.txt
-#     2785635 GSM1173791_allC.MethylC-Seq_mm_fc_female_12mo_neun_neg.chr1.context.txt
-#    12282691 GSM1173792_allC.MethylC-Seq_mm_fc_glia_S100b_pos.chr1.context.txt
-#    12751741 GSM1173793_allC.MethylC-Seq_mm_fc_tet2ko.chr1.context.txt
-#     5954244 GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr1.context.txt
-#     5976088 GSM1173795_allC.TAB-Seq_mm_fc_6wk.chr1.context.txt
 
 # Concatenate MethylC-Seq context files
 tableCat.py -i GSM*MethylC-Seq*.context.txt -r .context.txt | awk '{split($8,a,"."); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"substr(a[2],16)}' > mouse_brain_MethylC-Seq.chr1.context.txt &

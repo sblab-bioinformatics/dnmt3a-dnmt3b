@@ -464,32 +464,6 @@ do
     zcat $bed | awk -vOFS="\t" '{if ($1 == "chr1" && $10 > 9) print $1, $2, $3, $11, $10, $6 }' > $bname.chr1.bed &
 done
 
-wc -l *.bed
-#    16776602 EmbryonicFacialProminence_E10.5_ENCFF006QDP_1_CHH.chr1.bed
-#    15432189 EmbryonicFacialProminence_E10.5_ENCFF050FNM_2_CHH.chr1.bed
-#      911351 EmbryonicFacialProminence_E10.5_ENCFF095VLL_2_CpG.chr1.bed
-#     4637824 EmbryonicFacialProminence_E10.5_ENCFF198NON_2_CHG.chr1.bed
-#     4990059 EmbryonicFacialProminence_E10.5_ENCFF722PJA_1_CHG.chr1.bed
-#     1004429 EmbryonicFacialProminence_E10.5_ENCFF886MNA_1_CpG.chr1.bed
-#      940055 EmbryonicFacialProminence_E11.5_ENCFF083XWZ_2_CpG.chr1.bed
-#      964416 EmbryonicFacialProminence_E11.5_ENCFF306DKT_1_CpG.chr1.bed
-#     4834729 EmbryonicFacialProminence_E11.5_ENCFF590MRS_1_CHG.chr1.bed
-#    16076330 EmbryonicFacialProminence_E11.5_ENCFF754BON_2_CHH.chr1.bed
-#    16376632 EmbryonicFacialProminence_E11.5_ENCFF884JVJ_1_CHH.chr1.bed
-#     4745384 EmbryonicFacialProminence_E11.5_ENCFF997OLQ_2_CHG.chr1.bed
-#    12017242 EmbryonicFacialProminence_E14.5_ENCFF063YAO_1_CHH.chr1.bed
-#      815174 EmbryonicFacialProminence_E14.5_ENCFF686ZQQ_2_CpG.chr1.bed
-#    14350517 EmbryonicFacialProminence_E14.5_ENCFF709AXF_2_CHH.chr1.bed
-#     3528743 EmbryonicFacialProminence_E14.5_ENCFF744VPT_1_CHG.chr1.bed
-#     4241469 EmbryonicFacialProminence_E14.5_ENCFF757MSK_2_CHG.chr1.bed
-#      670539 EmbryonicFacialProminence_E14.5_ENCFF989UNH_1_CpG.chr1.bed
-#      919351 Forebrain_E10.5_ENCFF365XZL_2_CpG.chr1.bed
-#     4628308 Forebrain_E10.5_ENCFF369TZO_1_CHG.chr1.bed
-#    15512425 Forebrain_E10.5_ENCFF400MQF_2_CHH.chr1.bed
-#     4662702 Forebrain_E10.5_ENCFF506SUF_2_CHG.chr1.bed
-#    15390436 Forebrain_E10.5_ENCFF590OFM_1_CHH.chr1.bed
-#      909495 Forebrain_E10.5_ENCFF977BKF_1_CpG.chr1.bed
-
 ```
 
 ## prepare mm10 reference
@@ -524,30 +498,17 @@ do
 done
 
 
-# concatenate all CpG context files
-tableCat.py -i *ENCFF*CpG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CpG.chr1.context.txt &
-# takes 6.5G of space
-
-# concatenate all CHG context files
-tableCat.py -i *ENCFF*CHG*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CHG.chr1.context.txt &
-# take 33G of space
-
-# concatenate all CHH context files
-tableCat.py -i *ENCFF*CHH*.context.txt -r .context.txt | awk '{split($8,a,"_"); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"a[1]"\t"a[2]"\t"a[4]}' > mouse_tissue.CHH.chr1.context.txt &
-# take 110G of space
-
 # remove unneeded columns to save space and memory for later analysis
 # concatenate all context files, final size 70G
 tableCat.py -i mouse_tissue.CH*.chr1.context.txt -r .context.txt | awk '{print $7"\t"$4"\t"$8"\t"$9"\t"$10}' > mouse_tissue.nonCpG.chr1.context.txt &
 
 # only keep methylated cytosine for later analysis
-# concatenate all context files, final size 8.3G
 cat mouse_tissue.{CpG,CHG,CHH}.chr1.context.txt | awk '{if ($4 > 0) print $7"\t"$4"\t"$8"\t"$9"\t"$10}' > mouse_tissue.methylated.chr1.context.txt &
 
-# extract NCAN context, 24G
+# extract NCAN context
 awk -v OFS="\t" '{if ($1 ~ "...CA..") print substr($1,3,4)"\t"$2"\t"$3"\t"$4"\t"$5}' mouse_tissue.nonCpG.chr1.context.txt > mouse_tissue.ncan.chr1.context.txt &
 
-# extract CAN context, 23G
+# extract CAN context
 awk -v OFS="\t" '{if ($1 ~ ".CA.") print substr($1,2,3)"\t"$2"\t"$3"\t"$4"\t"$5}' mouse_tissue.ncan.chr1.context.txt > mouse_tissue.can.chr1.context.txt &
 
 
