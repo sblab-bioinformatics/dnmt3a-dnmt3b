@@ -89,13 +89,14 @@ do
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.context.txt &
 done
 
+# sample hs_fc_male_55yr_tissue has less reads, all Cs with more than 5 reads coverage is included
 for report in GSM1173775_allC.MethylC-Seq_hs_fc_male_55yr_tissue.chr1.txt.gz
 do
   bname=${report%.chr1.txt.gz}
   nohup zcat $report | \
   awk -v OFS='\t' '{if ($6 > 5) print "chr1", $2, $2+1, $5, $6, $3}' | \
   bedtools intersect -a - -b ../reference/hg18_genome.chr1.context.bed -loj -s -sorted | \
-  awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.cov5.context.txt &
+  awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.cov.context.txt &
 done
 
 
