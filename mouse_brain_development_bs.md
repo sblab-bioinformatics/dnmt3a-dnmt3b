@@ -9,35 +9,35 @@ cd ~
 mkdir data
 cd ~/data
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173779/suppl/GSM1173779_allC.MethylC-Seq_mm_fc_fetal.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173779/suppl/GSM1173779_allC.MethylC-Seq_mm_fc_fetal.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173780/suppl/GSM1173780_allC.MethylC-Seq_mm_fc_1wk.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173780/suppl/GSM1173780_allC.MethylC-Seq_mm_fc_1wk.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173781/suppl/GSM1173781_allC.MethylC-Seq_mm_fc_2wk.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173781/suppl/GSM1173781_allC.MethylC-Seq_mm_fc_2wk.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173782/suppl/GSM1173782_allC.MethylC-Seq_mm_fc_4wk.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173782/suppl/GSM1173782_allC.MethylC-Seq_mm_fc_4wk.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173783/suppl/GSM1173783_allC.MethylC-Seq_mm_fc_6wk.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173783/suppl/GSM1173783_allC.MethylC-Seq_mm_fc_6wk.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173784/suppl/GSM1173784_allC.MethylC-Seq_mm_fc_10wk.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173784/suppl/GSM1173784_allC.MethylC-Seq_mm_fc_10wk.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173785/suppl/GSM1173785_allC.MethylC-Seq_mm_fc_22mo.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173785/suppl/GSM1173785_allC.MethylC-Seq_mm_fc_22mo.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173786/suppl/GSM1173786_allC.MethylC-Seq_mm_fc_male_7wk_neun_pos.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173786/suppl/GSM1173786_allC.MethylC-Seq_mm_fc_male_7wk_neun_pos.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173787/suppl/GSM1173787_allC.MethylC-Seq_mm_fc_male_7wk_neun_neg.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173787/suppl/GSM1173787_allC.MethylC-Seq_mm_fc_male_7wk_neun_neg.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173788/suppl/GSM1173788_allC.MethylC-Seq_mm_fc_female_6wk_neun_pos.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173788/suppl/GSM1173788_allC.MethylC-Seq_mm_fc_female_6wk_neun_pos.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173789/suppl/GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173789/suppl/GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173790/suppl/GSM1173790_allC.MethylC-Seq_mm_fc_female_12mo_neun_pos.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173790/suppl/GSM1173790_allC.MethylC-Seq_mm_fc_female_12mo_neun_pos.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173791/suppl/GSM1173791_allC.MethylC-Seq_mm_fc_female_12mo_neun_neg.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173791/suppl/GSM1173791_allC.MethylC-Seq_mm_fc_female_12mo_neun_neg.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173792/suppl/GSM1173792_allC.MethylC-Seq_mm_fc_glia_S100b_pos.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173792/suppl/GSM1173792_allC.MethylC-Seq_mm_fc_glia_S100b_pos.chr19.txt.gz &
 
-curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173793/suppl/GSM1173793_allC.MethylC-Seq_mm_fc_tet2ko.chr1.txt.gz &
+curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173793/suppl/GSM1173793_allC.MethylC-Seq_mm_fc_tet2ko.chr19.txt.gz &
 
 ```
 
@@ -46,17 +46,17 @@ curl -sSOL ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1173nnn/GSM1173793/suppl/GS
 ```sh
 srun --mem 16G --pty /usr/bin/bash
 
-## Create mm9.chr1 reference
+## Create mm9.chr19 reference
 cd ~
 mkdir reference
 cd reference
 
 ref=genome.fa
 
-samtools faidx $ref chr1 > mm9.chr1.fa
-samtools faidx mm9.chr1.fa
+samtools faidx $ref chr19 > mm9.chr19.fa
+samtools faidx mm9.chr19.fa
 
-ref=mm9.chr1.fa
+ref=mm9.chr19.fa
 
 fastaRegexFinder.py -f $ref -r C | \
 cut -f1-3,6 | \
@@ -64,7 +64,7 @@ awk -v OFS="\t" '{print $1, $2, $3, ".", ".", $4}' | \
 bedtools slop -i - -g $ref.fai -b 6 | \
 bedtools getfasta -fi $ref -bed - -bedOut -s | \
 awk 'length($7) == 13' | \
-awk -v OFS="\t" '{print $1, $2+6, $3-6, $4, $5, $6, toupper($7)}' > mm9.chr1.context.bed &
+awk -v OFS="\t" '{print $1, $2+6, $3-6, $4, $5, $6, toupper($7)}' > mm9.chr19.context.bed &
 ```
 
 ## extract context information around C (±6)
@@ -72,23 +72,23 @@ awk -v OFS="\t" '{print $1, $2+6, $3-6, $4, $5, $6, toupper($7)}' > mm9.chr1.con
 ```sh
 cd ~/data
 
-bed=~/reference/mm9.chr1.context.bed
+bed=~/reference/mm9.chr19.context.bed
 
-for report in *.chr1.txt.gz
+for report in *.chr19.txt.gz
 do
   bname=${report%.txt.gz}
   # echo $bname $report
   zcat "$report" | \
-  awk -v OFS='\t' '{if ($6 > 9) print "chr1", $2, $2+1, $5, $6, $3}' | \
+  awk -v OFS='\t' '{if ($6 > 9) print "chr19", $2, $2+1, $5, $6, $3}' | \
   bedtools intersect -a - -b "$bed" -loj -s -sorted | \
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.context.txt &
 done
 
-## Error occured processing GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr1.txt.gz
+## Error occured processing GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr19.txt.gz
 ## Error: Sorted input specified, but the file - has the following out of order record
-## chr1   8387233 8387234 0       20      +
+## chr19   8387233 8387234 0       20      +
 
-zgrep -C 3 -w "8387233" GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr1.txt.gz
+zgrep -C 3 -w "8387233" GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr19.txt.gz
 # 19	8387230	-	CCC	0	3
 # 19	8387232	+	CCC	0	20
 # 19	8387234	+	CNN	0	20
@@ -97,31 +97,31 @@ zgrep -C 3 -w "8387233" GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr1.txt.gz
 # 19	8387243	-	CAA	0	3
 # 19	8387244	-	CCA	0	2
 
-# reprocess GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr1.txt.gz in unsorted mode
-for report in GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr1.txt.gz
+# reprocess GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr19.txt.gz in unsorted mode
+for report in GSM1173794_allC.TAB-Seq_mm_fc_fetal.chr19.txt.gz
 do
   bname=${report%.txt.gz}
   # echo $bname $report
   zcat "$report" | \
   sort -k2,2n | \
-  awk -v OFS='\t' '{if ($6 > 9) print "chr1", $2, $2+1, $5, $6, $3}' | \
+  awk -v OFS='\t' '{if ($6 > 9) print "chr19", $2, $2+1, $5, $6, $3}' | \
   bedtools intersect -a - -b "$bed" -loj -s -sorted | \
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.context.txt &
 done
 
-# reprocess GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.chr1.txt.gz
-for report in GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.chr1.txt.gz
+# reprocess GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.chr19.txt.gz
+for report in GSM1173789_allC.MethylC-Seq_mm_fc_female_6wk_neun_neg.chr19.txt.gz
 do
   bname=${report%.txt.gz}
   # echo $bname $report
   zcat "$report" | \
-  awk -v OFS='\t' '{if ($6 > 5) print "chr1", $2, $2+1, $5, $6, $3}' | \
+  awk -v OFS='\t' '{if ($6 > 5) print "chr19", $2, $2+1, $5, $6, $3}' | \
   bedtools intersect -a - -b "$bed" -loj -s -sorted | \
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.context.txt &
 done
 
 # Concatenate MethylC-Seq context files
-tableCat.py -i GSM*MethylC-Seq*.context.txt -r .context.txt | awk '{split($8,a,"."); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"substr(a[2],16)}' > mouse_brain_MethylC-Seq.chr1.context.txt &
+tableCat.py -i GSM*MethylC-Seq*.context.txt -r .context.txt | awk '{split($8,a,"."); print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"substr(a[2],16)}' > mouse_brain_MethylC-Seq.chr19.context.txt &
 
 ```
 
@@ -137,7 +137,7 @@ library(ggplot2)
 options(width = 300)
 
 # Load MethylC-Seq data
-data <- fread("~/data/mouse_brain_MethylC-Seq.chr1.context.txt")
+data <- fread("~/data/mouse_brain_MethylC-Seq.chr19.context.txt")
 setnames(data, c("chr", "start", "end", "cnt_met", "cnt_tot", "strand", "context", "library"))
 
 # Calculate percentage methylation
@@ -260,7 +260,7 @@ data_xcay[library == "fc_tet2ko", .(.N, pct_met_median = median(pct_met, na.rm=T
 # 16:         TCAA 287240              0         1.04
 
 # save data_xcay table
-fwrite(data_xcay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(library, context_xcay)], file = "~/data/mouse_brain_chr1_NCAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_xcay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(library, context_xcay)], file = "~/data/mouse_brain_chr19_NCAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 
 rm(data_xcay)
 ```
@@ -268,7 +268,7 @@ rm(data_xcay)
 # extract CAN methylation
 
 ```r
-data_ncan <- fread("~/data/mouse_brain_chr1_NCAN.txt")
+data_ncan <- fread("~/data/mouse_brain_chr19_NCAN.txt")
 
 
 # Extract cay context
@@ -315,7 +315,7 @@ ggsave("~/figures/CAN_age.pdf", width = 25, height = 20, units = "cm")
 
 
 ```r
-data_ncan <- fread("~/data/mouse_brain_chr1_NCAN.txt")
+data_ncan <- fread("~/data/mouse_brain_chr19_NCAN.txt")
 
 # Extract cay context
 data_ncan[, context_cay := as.vector(sapply(data_ncan$context_xcay, function(x) paste(unlist(strsplit(x, ""))[2:4], collapse = "")))]
