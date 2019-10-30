@@ -1,49 +1,20 @@
-72 datasets available from ENCODE.
+[72 datasets available from ENCODE]
 <https://www.encodeproject.org/matrix/?type=Experiment&status=released&assay_slims=DNA+methylation&assay_title=WGBS&replicates.library.biosample.donor.organism.scientific_name=Mus+musculus&biosample_ontology.classification=tissue&files.file_type=bed+bedMethyl>
 
 ## Download bedmethyl files
 
-Note (2019-08-09):forebrain E13.5 data (ENCSR141ZVB) was labeled as E12.5 by mistake.
-
-https://www.encodeproject.org/report/?type=Experiment&status=released&assay_slims=DNA+methylation&assay_title=WGBS&replicates.library.biosample.donor.organism.scientific_name=Mus+musculus&biosample_ontology.classification=tissue&files.file_type=bed+bedMethyl&biosample_ontology.term_name=forebrain&field=%40id&field=accession&field=assay_title&field=biosample_summary&field=biosample_ontology.term_name&field=lab.title&field=replicates.library.biosample.life_stage&field=replicates.library.biosample.age&field=replicates.library.biosample.age_units&field=replicates.library.biosample.treatments.treatment_term_name&field=replicates.library.biosample.treatments.concentration_units
-
 ```sh
-cd /scratcha/sblab/mao01/
-mkdir -p 20190719_mouse_tissue_wgbs/data
-cd /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data
-
+cd ~
+mkdir -p ~/data
+cd ~/data
 # downlaod files.txt from above ENCODE address
-# have to split the files so half of downloaded files are in /scratcha, half /scratchb
-split files.txt -l 280 files_split
-
-cd /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data
-xargs -L 1 -P 50 curl -sSOL < files_splitaa &
-
-###############################################################
-mkdir -p /scratchb/sblab/mao01/20190719_mouse_tissue_wgbs/data
-cd /scratchb/sblab/mao01/20190719_mouse_tissue_wgbs/data
-cp /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data/files_splitab .
-xargs -L 1 -P 50 curl -sSOL < files_splitab &
-cp /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data/metadata_mouse_with_age.tsv .
-###############################################################
-
-# rename bedmethyl files
-# maually edit metadata.tsv to include sample age and sex
-# for loop to generate the rename commands
-
-for bed in *.bed.gz
-do
-    bname=${bed%.bed.gz}
-    # echo $bed $bname
-    awk -v bed=$bed -v bname=$bname -v FS="\t" '{if ($1 == bname) {split($3, a, " "); split($7, b, " "); print "mv "bed" "toupper(substr(b[1],1,1))substr(b[1],2)toupper(substr(b[2],1,1))substr(b[2],2)toupper(substr(b[3],1,1))substr(b[3],2)"_"$8"_"$1"_"$32"_"a[4]".bed.gz"}}' metadata_mouse_with_age.tsv
-done | sort -k3
-
+xargs -L 1 -P 12 curl -sSOL < files.txt &
 ```
 
 ## rename bedmethyl files
 
 ```sh
-cd /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data
+cd ~/data
 
 mv ENCFF006QDP.bed.gz EmbryonicFacialProminence_E10.5_ENCFF006QDP_1_CHH.bed.gz
 mv ENCFF050FNM.bed.gz EmbryonicFacialProminence_E10.5_ENCFF050FNM_2_CHH.bed.gz
@@ -325,10 +296,6 @@ mv ENCFF361ACS.bed.gz Stomach_P0_ENCFF361ACS_2_CHG.bed.gz
 mv ENCFF562RGL.bed.gz Stomach_P0_ENCFF562RGL_2_CpG.bed.gz
 mv ENCFF782FDT.bed.gz Stomach_P0_ENCFF782FDT_1_CHH.bed.gz
 
-#########################################################
-
-cd /scratchb/sblab/mao01/20190719_mouse_tissue_wgbs/data
-
 mv ENCFF004RDJ.bed.gz EmbryonicFacialProminence_E12.5_ENCFF004RDJ_2_CHG.bed.gz
 mv ENCFF132PIM.bed.gz EmbryonicFacialProminence_E12.5_ENCFF132PIM_2_CHH.bed.gz
 mv ENCFF497NGX.bed.gz EmbryonicFacialProminence_E12.5_ENCFF497NGX_2_CpG.bed.gz
@@ -488,7 +455,7 @@ mv ENCFF803ATF.bed.gz Stomach_E16.5_ENCFF803ATF_2_CpG.bed.gz
 ## extract chr19 info
 
 ```sh
-cd /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data
+cd ~/data
 
 for bed in *.bed.gz
 do
@@ -533,18 +500,17 @@ wget http://igenomes.illumina.com.s3-website-us-east-1.amazonaws.com/Mus_musculu
 
 tar -zxvf Mus_musculus_UCSC_mm10.tar.gz
 
-
 # genome.fa.fai IS older than genome.fa, generate new index
-cd /Users/mao01/ref/Mus_musculus/UCSC/mm10/Sequence/WholeGenomeFasta/
+cd ~/ref/Mus_musculus/UCSC/mm10/Sequence/WholeGenomeFasta/
 samtools faidx genome.fa
 ```
 
 ## extract context information around C (±3)
 
 ```sh
-cd /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data
+cd ~/data
 
-ref=/Users/mao01/ref/Mus_musculus/UCSC/mm10/Sequence/WholeGenomeFasta/genome.fa
+ref=~/ref/Mus_musculus/UCSC/mm10/Sequence/WholeGenomeFasta/genome.fa
 
 for bed in *.bed
 do
@@ -607,11 +573,11 @@ library(ggplot2)
 options(width = 300)
 
 # Load mfg data
-# data <- fread("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data/mouse_tissue.nonCpG.chr19.context.txt")
+# data <- fread("~/data/mouse_tissue.nonCpG.chr19.context.txt")
 # # nrow larger than current 2^31 limit
 # # See ?"Memory-limits" for more details.
 
-data <- fread("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data/mouse_tissue.ncan.chr19.context.txt")
+data <- fread("~/data/mouse_tissue.ncan.chr19.context.txt")
 
 setnames(data, c("context", "pct_met", "mouse_tissue", "age", "rep"))
 
@@ -626,147 +592,6 @@ table(data$age)
 #  91116854 117884145 128076443  97822849 171322970 175816157 134221615 130287119
 ```
 
-## extract NCAN methylation
-
-```R
-data_xcay <- data
-
-# remove context with N
-# The like operator is a simple wrapper for grep(..., value=TRUE)
-data_xcay <- data_xcay[!context %like% "N"]
-
-# Explore xcay context
-## Placenta
-data_xcay[mouse_tissue == "Liver" & age == "E11.5", .(.N, pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context)][order(-pct_met_mean)]
-#     context       N pct_met_mean
-#  1:    CCAC  796295         1.07
-#  2:    CCAT  908263         0.80
-#  3:    CCAG 1132288         0.77
-#  4:    CCAA  911119         0.74
-#  5:    ACAC 1136768         0.72
-#  6:    GCAC  576828         0.71
-#  7:    TCAC  796857         0.66
-#  8:    GCAG  911931         0.55
-#  9:    ACAG 1251398         0.49
-# 10:    TCAG 1129466         0.49
-# 11:    TCAT 1007252         0.48
-# 12:    GCAT  732636         0.47
-# 13:    TCAA  984174         0.45
-# 14:    GCAA  737863         0.44
-# 15:    ACAT 1124570         0.42
-# 16:    ACAA 1203825         0.41
-
-data_xcay[mouse_tissue == "Liver" & age == "P0", .(.N, pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context)][order(-pct_met_mean)]
-#     context       N pct_met_mean
-#  1:    CCAC  729151         1.25
-#  2:    ACAC 1023724         0.91
-#  3:    CCAT  853716         0.90
-#  4:    CCAG 1049349         0.88
-#  5:    GCAC  536298         0.87
-#  6:    CCAA  864438         0.84
-#  7:    TCAC  746899         0.81
-#  8:    GCAG  849213         0.63
-#  9:    ACAG 1188778         0.58
-# 10:    TCAG 1065630         0.56
-# 11:    TCAT  965095         0.55
-# 12:    GCAT  695676         0.55
-# 13:    TCAA  948958         0.52
-# 14:    GCAA  706030         0.52
-# 15:    ACAT 1077345         0.51
-# 16:    ACAA 1167137         0.49
-
-data_xcay[mouse_tissue == "Forebrain" & age == "E10.5", .(.N, pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context)][order(-pct_met_mean)]
-#     context       N pct_met_mean
-#  1:    CCAC  791139         0.79
-#  2:    CCAT  911219         0.58
-#  3:    CCAG 1141339         0.57
-#  4:    CCAA  910792         0.53
-#  5:    GCAC  571754         0.52
-#  6:    ACAC  994924         0.47
-#  7:    TCAC  793003         0.47
-#  8:    GCAG  917989         0.44
-#  9:    GCAT  732693         0.36
-# 10:    ACAG 1248412         0.35
-# 11:    TCAG 1137914         0.35
-# 12:    GCAA  740656         0.34
-# 13:    TCAT 1003533         0.34
-# 14:    TCAA  983935         0.31
-# 15:    ACAA 1196992         0.28
-# 16:    ACAT 1099021         0.28
-
-data_xcay[mouse_tissue == "Forebrain" & age == "P0", .(.N, pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(context)][order(-pct_met_mean)]
-#     context       N pct_met_mean
-#  1:    CCAC  790134         1.32
-#  2:    ACAC 1138699         1.05
-#  3:    GCAC  570968         1.02
-#  4:    CCAG 1122330         0.92
-#  5:    CCAT  908722         0.91
-#  6:    TCAC  795035         0.91
-#  7:    CCAA  909792         0.85
-#  8:    GCAG  899889         0.70
-#  9:    ACAG 1246214         0.64
-# 10:    TCAG 1126451         0.61
-# 11:    GCAT  731660         0.61
-# 12:    TCAT 1010948         0.59
-# 13:    GCAA  735889         0.57
-# 14:    ACAT 1127319         0.57
-# 15:    TCAA  985946         0.53
-# 16:    ACAA 1205258         0.52
-
-# save data_xcay table
-fwrite(data_xcay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context, age, rep)][order(-pct_met_mean)], file = "/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_NCAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
-```
-
-### plot NCAN changes through age
-
-```r
-R
-library(data.table)
-library(ggplot2)
-
-# Set width
-options(width = 300)
-
-data_ncan <- fread("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_NCAN.txt")
-
-# clean data
-ncan_age <- data_ncan[, c(1:4, 7)]
-
-# caculate mean,sd in replicates
-library(plyr)
-
-ncan_age_rep <- ddply(ncan_age, c("mouse_tissue", "context", "age"), summarise, rep_N = length(rep), rep_mean = mean(pct_met_mean),rep_sd = sd(pct_met_mean), rep_se = rep_sd/sqrt(rep_N))
-
-setDT(ncan_age_rep)
-
-# set the order of libraries
-ncan_age_rep$age <- factor(ncan_age_rep$age, levels = c("E10.5", "E11.5", "E12.5", "E13.5", "E14.5","E15.5", "E16.5", "P0"))
-
-ncan_age_rep$mouse_tissue <- factor(ncan_age_rep$mouse_tissue, levels = c("Forebrain", "Midbrain", "Hindbrain", "NeuralTube", "Heart","Liver", "EmbryonicFacialProminence", "Limb", "Kidney",  "Intestine", "Stomach", "Lung"))
-
-ncan_age_rep$context <- factor(ncan_age_rep$context, levels = ncan_age_rep[, .(.N, rep_mean_mean = round(mean(rep_mean, na.rm=TRUE), 2)), by = .(context)][order(-rep_mean_mean)]$context)
-
-## levels = "CCAC" "ACAC" "CCAT" "CCAG" "GCAC" "CCAA" "TCAC" "GCAG" "ACAG" "GCAT" "TCAG" "TCAT" "GCAA" "TCAA" "ACAT" "ACAA"
-
-# plot
-gg <- ggplot(ncan_age_rep, aes(x = age, y = rep_mean, color = context, group = context)) +
-geom_point(size = 1) +
-geom_line() +
-geom_errorbar(aes(ymin = rep_mean - rep_sd, ymax = rep_mean + rep_sd), width = 0.2) +
-theme_bw() +
-facet_wrap(~ mouse_tissue, ncol = 4) +
-ylab(expression("mNCAN/NCAN")) + 
-xlab("") +
-theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
-coord_cartesian(ylim = c(0, 1.75))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_NCAN_age.pdf", width = 25, height = 20, units = "cm")
-
-rm(ncan_age)
-rm(ncan_age_rep)
-rm(data_ncan)
-rm(data_xcay)
-
-```
 
 ## extract CAN methylation
 
@@ -828,7 +653,7 @@ data_cay[mouse_tissue == "Forebrain", .(.N, pct_met_mean = round(mean(pct_met, n
 # 28:         CAA E16.5 3652393         0.36
 
 # save data_cay table
-fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cay, age, rep)][order(-pct_met_mean)], file = "/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_cay[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cay, age, rep)][order(-pct_met_mean)], file = "~/mouse_tissue_chr19_CAN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 ```
 
 ### plot CAC/CAG, CAY_CAR
@@ -861,7 +686,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black")) +
 coord_cartesian(ylim = c(0, 1.75))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAC_CAG.pdf")
+ggsave("~/mouse_tissue_chr19_CAC_CAG.pdf")
 
 ## plot CAY_CAR
 cac_cag$mouse_tissue <- factor(cac_cag$mouse_tissue, level = cac_cag$mouse_tissue[order(cac_cag$CAC_CAG)])
@@ -873,7 +698,7 @@ ylab(expression("[mCAC/CAC+mCAT/CAT]/[mCAG/CAG+mCAA/CAA]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black")) +
 coord_cartesian(ylim = c(0, 1.75))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAY_CAR.pdf")
+ggsave("~/mouse_tissue_chr19_CAY_CAR.pdf")
 
 
 ## plot CAC_CAG, CAY_CAR side by side
@@ -888,7 +713,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=16), axis.text.y = element_text(size=16, color = "black"), axis.text.x = element_text(angle = 45, size = 12, color = "black", hjust = 1), legend.text = element_text(size = 16, color = "black")) +
 coord_cartesian(ylim = c(0, 1.75))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAC_CAG_CAR_CAR.pdf")
+ggsave("~/mouse_tissue_chr19_CAC_CAG_CAR_CAR.pdf")
 
 rm(cac_cag_melt)
 rm(cac_cag)
@@ -900,14 +725,14 @@ rm(cac_cag)
 can_age <- data_cay[, .(pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cay, age, rep)]
 
 # save can_age table
-fwrite(can_age, file = "/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAN_age.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(can_age, file = "~/mouse_tissue_chr19_CAN_age.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 
 ## load data
 # R
 # library(data.table)
 # library(ggplot2)
 # options(width = 300)
-# can_age <- fread("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAN_age.txt")
+# can_age <- fread("~/mouse_tissue_chr19_CAN_age.txt")
 
 # caculate mean,sd in replicates
 library(plyr)
@@ -936,7 +761,7 @@ ylab(expression("CA methylation (%)")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
 coord_cartesian(ylim = c(0, 1.5))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
 
 # plot brain (add colour)
 gg <- ggplot( can_age_rep[mouse_tissue %in% c("Forebrain", "Midbrain", "Hindbrain")], aes(x = age, y = rep_mean, color = context_cay, group = context_cay)) +
@@ -952,7 +777,7 @@ ylab(expression("CA methylation (%)")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12), legend.position="top") +
 coord_cartesian(ylim = c(0, 1.5))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
 
 # plot others (add colour)
 gg <- ggplot( can_age_rep[mouse_tissue %in% c("NeuralTube", "Heart","Liver", "EmbryonicFacialProminence", "Limb", "Kidney",  "Intestine", "Stomach", "Lung")], aes(x = age, y = rep_mean, color = context_cay, group = context_cay)) +
@@ -968,7 +793,7 @@ ylab(expression("mCAN/CAN")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12), legend.position="top") +
 coord_cartesian(ylim = c(0, 1.5))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190721_mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/mouse_tissue_chr19_CAN_age.pdf", width = 25, height = 20, units = "cm")
 
 
 ########### plot CAC/CAG, CAY_CAR ratios through age ###########
@@ -1004,7 +829,7 @@ ylab(expression("[mCAC/CAC]/[mCAG/CAG]")) +
 xlab("") +
 theme(legend.title = element_blank(), axis.title = element_text(size=12), axis.text.y = element_text(size=12, color = "black"), axis.text.x = element_text(angle = 45, size = 10, color = "black", hjust = 1), legend.text = element_text(size = 12, color = "black")) +
 coord_cartesian(ylim = c(0, 2))
-ggsave("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190722_mouse_tissue_chr19_CAC_CAG_CAY_CAR_age.pdf", width = 25, height = 20, units = "cm")
+ggsave("~/20190722_mouse_tissue_chr19_CAC_CAG_CAY_CAR_age.pdf", width = 25, height = 20, units = "cm")
 
 rm(cac_cag_age_melt_rep)
 rm(cac_cag_age_melt)
@@ -1020,7 +845,7 @@ rm(data)
 ## save and delete files
 
 ```sh
-cd /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data
+cd ~/data
 
 # remove bedmethyl & bed files
 rm *bed*
@@ -1035,7 +860,7 @@ pigz *.context.txt &
 
 
 ```r
-cd /scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data
+cd ~/data
 unpigz mouse_tissue.CpG.chr19.context.txt
 
 R
@@ -1045,7 +870,7 @@ library(ggplot2)
 # Set width
 options(width = 300)
 
-data <- fread("/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/data/mouse_tissue.CpG.chr19.context.txt")
+data <- fread("~/data/mouse_tissue.CpG.chr19.context.txt")
 
 setnames(data, c("chr", "start", "end", "pct_met", "cnt_tot", "strand", "context", "mouse_tissue", "age", "rep"))
 
@@ -1131,5 +956,5 @@ dcast(fb, age ~ context_cgy + rep, value.car = "pct_met_mean")
 # 6: E16.5    79    79    80    80    78    78    78    77
 # 7:    P0    78    78    80    80    77    78    77    77
 
-fwrite(data_cgy[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cgy, age, rep)][order(-pct_met_mean)], file = "/scratcha/sblab/mao01/20190719_mouse_tissue_wgbs/20190809_mouse_tissue_chr19_CGN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
+fwrite(data_cgy[, .(.N, pct_met_median = as.double(median(pct_met, na.rm=TRUE)), pct_met_mean = round(mean(pct_met, na.rm=TRUE), 2)), by = .(mouse_tissue, context_cgy, age, rep)][order(-pct_met_mean)], file = "~/20190809_mouse_tissue_chr19_CGN.txt", sep = "\t", row.names=FALSE, quote=FALSE)
 ```
