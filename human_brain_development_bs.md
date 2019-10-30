@@ -77,10 +77,6 @@ bedtools getfasta -fi $ref -bed - -bedOut -s | \
 awk 'length($7) == 13' | \
 awk -v OFS="\t" '{print $1, $2+6, $3-6, $4, $5, $6, toupper($7)}' > hg18_genome.chr1.context.bed
 
-wc -l hg18_genome.chr1.context.bed 
-# 93921242 Cs, with +/- 6bp sequence context in chr1 both in forward and reverse strands
-
-
 ## Sequence context file
 cd ~/data
 
@@ -93,22 +89,6 @@ do
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.context.txt &
 done
 
-wc -l *.context.txt 
-#    26666299 GSM1163695_allC.MethylC-Seq_hs_fc_fetal.context.txt
-#    43770632 GSM1164630_allC.MethylC-Seq_hs_mfg_12yr.context.txt
-#    44567083 GSM1164631_allC.MethylC-Seq_hs_mfg_16yr.context.txt
-#    41767596 GSM1164632_allC.MethylC-Seq_hs_mfg_25yr.context.txt
-#    42911516 GSM1166274_allC.MethylC-Seq_hs_mfg_5yr.context.txt
-#    41535200 GSM1167004_allC.MethylC-Seq_hs_mfg_35do.context.txt
-#    45409169 GSM1167005_allC.MethylC-Seq_hs_mfg_2yr.context.txt
-#    11292867 GSM1173772_allC.MethylC-Seq_hs_fc_64yr.context.txt
-#    32893028 GSM1173773_allC.MethylC-Seq_hs_fc_female_53yr_NeuN_pos.context.txt
-#    13858409 GSM1173774_allC.MethylC-Seq_hs_fc_female_53yr_NeuN_neg.context.txt
-#       60001 GSM1173775_allC.MethylC-Seq_hs_fc_male_55yr_tissue.context.txt
-#    26296266 GSM1173776_allC.MethylC-Seq_hs_fc_male_55yr_NeuN_pos.context.txt
-#    21802900 GSM1173777_allC.MethylC-Seq_hs_fc_male_55yr_NeuN_neg.context.txt
-#     7366782 GSM1173778_allC.MethylC-Seq_hs_hues6.context.txt
-
 for report in GSM1173775_allC.MethylC-Seq_hs_fc_male_55yr_tissue.chr1.txt.gz
 do
   bname=${report%.chr1.txt.gz}
@@ -118,9 +98,6 @@ do
   awk -v OFS='\t' '{print $1, $2, $3, $4, $5, $6, $13}' > $bname.cov5.context.txt &
 done
 
-wc -l GSM1173775_allC.MethylC-Seq_hs_fc_male_55yr_tissue*
-#    60001 GSM1173775_allC.MethylC-Seq_hs_fc_male_55yr_tissue.context.txt
-#  1367135 GSM1173775_allC.MethylC-Seq_hs_fc_male_55yr_tissue.cov5.context.txt
 
 # Concatenate context files
 cd ~/data
