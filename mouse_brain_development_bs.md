@@ -169,7 +169,7 @@ tableCat.py -i GSM*MethylC-Seq*.context.txt -r .context.txt | awk '{split($8,a,"
 
 ### load MethylC-Seq data in R
 
-```R
+```r
 R
 library(data.table)
 library(ggplot2)
@@ -189,10 +189,12 @@ table(data$library)
 #                 7002418                 5241652                11869853                 9740227                10579190                 9977493                 2785635                 5006539                 3078045                 3115075                 5251961                12282691
 #    fc_male_7wk_neun_neg    fc_male_7wk_neun_pos               fc_tet2ko
 #                11556716                 8396847                12751741
+
 ```
+
 ### extract NCAN methylation
 
-```sh
+```r
 data_xcay <- copy(data[grepl("...CA..", data$context)])
 
 # Extract XCAY context
