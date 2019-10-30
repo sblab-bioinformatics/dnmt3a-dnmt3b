@@ -840,9 +840,7 @@ rm(data)
 
 ```
 
-
 # extract CGN methylation
-
 
 ```r
 cd ~/data
