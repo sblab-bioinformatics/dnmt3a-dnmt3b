@@ -15,8 +15,12 @@ DNMT3B-Abcam-120min | unmethylated Escherichia coli str. K-12 substr. MG1655 | h
 DNMT3B-Abcam-240min | unmethylated Escherichia coli str. K-12 substr. MG1655 | human DNMT3B	(240 min) | 4
 MSssI-10min | unmethylated Escherichia coli str. K-12 substr. MG1655 | bacterial MSssI (10 min) | 4
 MSssI-30min | unmethylated Escherichia coli str. K-12 substr. MG1655 | bacterial MSssI (30 min) | 4
-MSssI-240min | unmethylated Escherichia coli str. K-12 substr. MG1655 | bacterial MSssI (240 min) | 4
-Ecoli-unmethylated-DNA | unmethylated Escherichia coli str. K-12 substr. MG1655 | none | 4	
+MSssI-240min | unmethylated Escherichia coli str. K-12 substr. MG1655 | bacterial MSssI (240 min) | 4	
+DNMT3L-240min | unmethylated Escherichia coli str. K-12 substr. MG1655 | human DNMT3L (240 min) | 4
+DNMT3A-only-120min | unmethylated Escherichia coli str. K-12 substr. MG1655 | human DNMT3A	(120 min) | 4
+DNMT3B-only-120min | unmethylated Escherichia coli str. K-12 substr. MG1655 | human DNMT3B	(120 min) | 4
+DNMT3A-DNMT3L-120min | unmethylated Escherichia coli str. K-12 substr. MG1655 | human DNMT3A + DNMT3L	(120 min) | 4
+DNMT3B-DNMT3L-120min | unmethylated Escherichia coli str. K-12 substr. MG1655 | human DNMT3B + DNMT3L	(120 min) | 4
 
 To access the publicly available human and mouse bisulfite and RNA-seq datasets - have a look at the Supplementary table
 
@@ -31,11 +35,6 @@ To access the publicly available human and mouse bisulfite and RNA-seq datasets 
   - [*E.coli* bisulfite sequencing](ecoli_bs.md)
   - [Mouse TKO DNMT bisulfite sequencing](mouse_tko_dnmt_bs.md)
   - [Human DNMT KO bisulfite sequencing](human_dnmt_ko_bs.md)
-  - [Human tissues bisulfite sequencing](human_tissues_bs.md)
-  - [Human brain development bisulfite sequencing](human_brain_development_bs.md)
-  - [Human and mouse development RNA-seq](human_mouse_development_rna-seq.md)
-  - [Mouse tissues bisulfite sequencing](mouse_tissue_bs.md)
-  - [Mouse brain development bisulfite sequencing](mouse_brain_development_bs.md)
 
 
 
