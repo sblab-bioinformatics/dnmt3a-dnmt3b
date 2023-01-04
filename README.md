@@ -1,4 +1,4 @@
-This repository contains data access, source code and demo of the custom computational analyses developed as part of our paper [**Sequence preference of DNMT3A/B dictates genome-wide DNA methylation signature**](https://pubs.acs.org/doi/10.1021/acs.biochem.0c00339)
+This repository contains data access, source code and demo of the custom computational analyses developed as part of our paper [**Genome-wide DNA Methylation Signatures Are Determined by DNMT3A/B Sequence Preferences**](https://pubs.acs.org/doi/10.1021/acs.biochem.0c00339)
 
 ## Data
 
